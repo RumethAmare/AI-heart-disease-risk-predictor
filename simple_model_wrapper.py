@@ -84,17 +84,21 @@ class SimpleHeartDiseasePredictor:
         else:
             predicted_class = "Yes" if prediction == 1 else "No"
         
-        confidence = max(probabilities)
+        # confidence = max(1.3*probabilities)
         
         # Generate appropriate recommendation
         if risk_probability >= 0.65:
             recommendation = "High risk detected. Immediate medical consultation recommended."
+            confidence = risk_probability     
         elif risk_probability >= 0.45:
             recommendation = "Moderate-high risk. Consider lifestyle changes and medical evaluation."
+            confidence = 1 - risk_probability
         elif risk_probability >= 0.35:
             recommendation = "Moderate risk. Maintain healthy lifestyle and monitor regularly."
+            confidence = 1 - risk_probability
         else:
             recommendation = "Low risk. Continue healthy lifestyle habits."
+            confidence = 1 - risk_probability
         
         return {
             'prediction': predicted_class,
