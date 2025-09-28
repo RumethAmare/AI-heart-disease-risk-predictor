@@ -61,15 +61,15 @@ class SimpleHeartDiseasePredictor:
         risk_probability = 1.3*probabilities[1]  # Probability of "Yes"
         
         # SMART THRESHOLDING: Dynamic based on risk level
-        if risk_probability >= 0.65:
+        if risk_probability >= 0.75:
             prediction = 1  # High confidence "Yes"
             risk_level = "High"
             color = "red"
-        elif risk_probability >= 0.45:
+        elif risk_probability >= 0.65:
             prediction = 1  # Medium-high risk "Yes"  
             risk_level = "Medium-High"
             color = "orange"
-        elif risk_probability >= 0.35:
+        elif risk_probability >= 0.5:
             prediction = 0  # Medium risk "No" but warn
             risk_level = "Medium"
             color = "orange"
@@ -87,15 +87,15 @@ class SimpleHeartDiseasePredictor:
         # confidence = max(1.3*probabilities)
         
         # Generate appropriate recommendation
-        if risk_probability >= 0.65:
+        if risk_probability >= 0.75:
             recommendation = "High risk detected. Immediate medical consultation recommended."
             confidence = risk_probability  
-        elif risk_probability >= 0.5:
+        elif risk_probability >= 0.65:
             recommendation = "Moderate-high risk. Consider lifestyle changes and medical evaluation."
             confidence = risk_probability
-        elif risk_probability >= 0.35:
+        elif risk_probability >= 0.5:
             recommendation = "Moderate risk. Maintain healthy lifestyle and monitor regularly."
-            confidence = 1 - risk_probability
+            confidence = risk_probability
         else:
             recommendation = "Low risk. Continue healthy lifestyle habits."
             confidence = 1 - risk_probability
