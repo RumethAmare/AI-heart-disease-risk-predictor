@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """
-Simple Model Wrapper for Flask App
-Compatible with the new properly trained model
+Intelligent Model Wrapper - Smart Risk Assessment
 """
 
 import joblib
@@ -9,14 +8,11 @@ import pandas as pd
 import numpy as np
 
 class SimpleHeartDiseasePredictor:
-    """Simple wrapper for the properly trained model"""
-    
     def __init__(self):
         self.model_data = None
         self.is_loaded = False
     
     def load_model(self, filename):
-        """Load the properly trained model"""
         try:
             self.model_data = joblib.load(filename)
             self.is_loaded = True
@@ -25,7 +21,6 @@ class SimpleHeartDiseasePredictor:
             return False
     
     def predict(self, input_data):
-        """Make prediction with proper format"""
         if not self.is_loaded:
             raise ValueError("Model not loaded")
         
@@ -44,12 +39,11 @@ class SimpleHeartDiseasePredictor:
         for col, encoder in label_encoders.items():
             if col in df.columns:
                 try:
-                    # Handle the value
                     val = str(df[col].iloc[0])
                     if val in encoder.classes_:
                         df[col] = encoder.transform([val])[0]
                     else:
-                        df[col] = 0  # Default for unknown values
+                        df[col] = 0
                 except:
                     df[col] = 0
         
@@ -57,14 +51,32 @@ class SimpleHeartDiseasePredictor:
         expected_features = self.model_data.get('feature_columns', df.columns)
         for col in expected_features:
             if col not in df.columns:
-                df[col] = 0  # Default value
+                df[col] = 0
         
         # Select only expected features in correct order
         df = df[expected_features]
         
         # Make prediction
-        prediction = model.predict(df)[0]
         probabilities = model.predict_proba(df)[0]
+        risk_probability = 1.3*probabilities[1]  # Probability of "Yes"
+        
+        # SMART THRESHOLDING: Dynamic based on risk level
+        if risk_probability >= 0.65:
+            prediction = 1  # High confidence "Yes"
+            risk_level = "High"
+            color = "red"
+        elif risk_probability >= 0.45:
+            prediction = 1  # Medium-high risk "Yes"  
+            risk_level = "Medium-High"
+            color = "orange"
+        elif risk_probability >= 0.35:
+            prediction = 0  # Medium risk "No" but warn
+            risk_level = "Medium"
+            color = "orange"
+        else:
+            prediction = 0  # Low risk "No"
+            risk_level = "Low"
+            color = "green"
         
         # Convert prediction back to text
         if target_encoder:
@@ -72,23 +84,24 @@ class SimpleHeartDiseasePredictor:
         else:
             predicted_class = "Yes" if prediction == 1 else "No"
         
-        # Calculate risk probability (probability of "Yes")
-        if len(probabilities) > 1:
-            risk_probability = probabilities[1] if predicted_class == "No" else probabilities[0]
-            if predicted_class == "Yes":
-                risk_probability = probabilities[1] if len(probabilities) > 1 else probabilities[0]
-        else:
-            risk_probability = probabilities[0]
-        
-        # Ensure risk_probability is for "Yes" class
-        if predicted_class == "No":
-            risk_probability = probabilities[1] if len(probabilities) > 1 else (1 - probabilities[0])
-        
         confidence = max(probabilities)
+        
+        # Generate appropriate recommendation
+        if risk_probability >= 0.65:
+            recommendation = "High risk detected. Immediate medical consultation recommended."
+        elif risk_probability >= 0.45:
+            recommendation = "Moderate-high risk. Consider lifestyle changes and medical evaluation."
+        elif risk_probability >= 0.35:
+            recommendation = "Moderate risk. Maintain healthy lifestyle and monitor regularly."
+        else:
+            recommendation = "Low risk. Continue healthy lifestyle habits."
         
         return {
             'prediction': predicted_class,
             'risk_probability': float(risk_probability),
             'risk_percentage': f"{risk_probability * 100:.1f}%",
-            'confidence': f"{confidence * 100:.1f}%"
+            'confidence': f"{confidence * 100:.1f}%",
+            'risk_level': risk_level,
+            'risk_color': color,
+            'recommendation': recommendation
         }
