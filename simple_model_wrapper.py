@@ -89,10 +89,10 @@ class SimpleHeartDiseasePredictor:
         # Generate appropriate recommendation
         if risk_probability >= 0.65:
             recommendation = "High risk detected. Immediate medical consultation recommended."
-            confidence = risk_probability     
-        elif risk_probability >= 0.45:
+            confidence = risk_probability  
+        elif risk_probability >= 0.5:
             recommendation = "Moderate-high risk. Consider lifestyle changes and medical evaluation."
-            confidence = 1 - risk_probability
+            confidence = risk_probability
         elif risk_probability >= 0.35:
             recommendation = "Moderate risk. Maintain healthy lifestyle and monitor regularly."
             confidence = 1 - risk_probability
