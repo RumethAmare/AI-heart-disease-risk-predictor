@@ -200,6 +200,49 @@ def health_check():
         'success': True
     })
 
+@app.route('/api/statistics', methods=['GET'])
+def get_statistics():
+    """Return comprehensive dataset statistics for visualization"""
+    try:
+        import json
+        import os
+        import subprocess
+        
+        # Load statistics from JSON file
+        stats_file = 'dataset_statistics.json'
+        
+        if not os.path.exists(stats_file):
+            logger.info("Statistics file not found, generating new statistics...")
+            # Generate statistics if file doesn't exist
+            result = subprocess.run(['./.venv/Scripts/python.exe', 'generate_dataset_statistics.py'], 
+                                  capture_output=True, text=True, shell=True, cwd='.')
+            
+            if result.returncode != 0:
+                logger.error(f"Failed to generate statistics: {result.stderr}")
+                return jsonify({
+                    'error': 'Failed to generate statistics',
+                    'details': result.stderr,
+                    'success': False
+                }), 500
+        
+        # Load and return statistics
+        with open(stats_file, 'r') as f:
+            statistics = json.load(f)
+        
+        logger.info("Statistics loaded successfully")
+        return jsonify({
+            'success': True,
+            'data': statistics
+        })
+        
+    except Exception as e:
+        logger.error(f"Error loading statistics: {str(e)}")
+        return jsonify({
+            'error': 'Failed to load statistics',
+            'details': str(e),
+            'success': False
+        }), 500
+
 @app.errorhandler(404)
 def not_found(error):
     """Handle 404 errors."""
