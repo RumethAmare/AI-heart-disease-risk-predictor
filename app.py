@@ -16,7 +16,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Initialize Flask app with template and static folders
-app = Flask(__name__, template_folder='.', static_folder='.')
+app = Flask(__name__, template_folder='frontend', static_folder='frontend')
 CORS(app)
 
 # Global predictor instance
