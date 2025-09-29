@@ -235,7 +235,7 @@
                     <ul class="nav-links">
                         <li><a href="/">Home</a></li>
                         <li><a href="/statistics">Statistics</a></li>
-                        <li><a href="#predict">Predict</a></li>
+                        <li><a href="/assess">Assess Risk</a></li>
                         <li><a href="#about">About</a></li>
                     </ul>
                 </nav>
@@ -272,13 +272,13 @@
         </div>
 
         <div class="features-grid">
-            <div class="feature-card" onclick="window.location.href='#predict'">
+            <div class="feature-card" onclick="window.location.href='/assess'">
                 <div class="feature-icon">
                     <i class="fas fa-user-md"></i>
                 </div>
                 <h3 class="feature-title">Risk Assessment</h3>
                 <p class="feature-description">Get instant heart disease risk predictions based on 21 health parameters using advanced RandomForest algorithm.</p>
-                <a href="#predict" class="feature-button">Start Assessment</a>
+                <a href="/assess" class="feature-button">Start Assessment</a>
             </div>
 
             <div class="feature-card" onclick="window.location.href='/statistics'">
@@ -301,13 +301,17 @@
         </div>
 
         <div id="predict" class="stats-section" style="margin-top: 4rem;">
-            <h2 class="stats-title">🚀 Quick Prediction Test</h2>
+            <h2 class="stats-title">🚀 Get Your Risk Assessment</h2>
             <div style="text-align: center;">
                 <p style="font-size: 1.1rem; color: #7f8c8d; margin-bottom: 2rem;">
-                    Test the prediction API with sample data to see the model in action
+                    Complete our comprehensive assessment form to get your personalized heart disease risk analysis
                 </p>
-                <button onclick="testPrediction()" class="feature-button" style="font-size: 1.1rem; padding: 1rem 3rem;">
-                    <i class="fas fa-play-circle"></i> Test Prediction API
+                <a href="/assess" class="feature-button" style="font-size: 1.1rem; padding: 1rem 3rem; text-decoration: none; display: inline-block;">
+                    <i class="fas fa-heartbeat"></i> Start Assessment Now
+                </a>
+                <br><br>
+                <button onclick="testPrediction()" class="feature-button" style="font-size: 1rem; padding: 0.8rem 2rem; background: linear-gradient(135deg, #3498db, #2980b9);">
+                    <i class="fas fa-play-circle"></i> Test API with Sample Data
                 </button>
                 <div id="predictionResult" style="margin-top: 2rem; padding: 1rem; background: #f8f9fa; border-radius: 10px; display: none;">
                     <h4 style="color: #2c3e50; margin-bottom: 1rem;">Prediction Result:</h4>

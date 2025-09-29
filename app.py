@@ -8,7 +8,7 @@ from flask import Flask, request, jsonify, render_template, send_from_directory
 from flask_cors import CORS
 import os
 import json
-from simple_model_wrapper import SimpleHeartDiseasePredictor
+from enhanced_model_wrapper import EnhancedHeartDiseasePredictor
 import logging
 
 # Configure logging
@@ -26,7 +26,7 @@ def initialize_model():
     """Initialize or load the heart disease prediction model."""
     global predictor
     
-    predictor = SimpleHeartDiseasePredictor()
+    predictor = EnhancedHeartDiseasePredictor()
     
     # Try to load the new properly trained model first
     if not predictor.load_model('heart_disease_model_FIXED.pkl'):
@@ -40,15 +40,51 @@ def initialize_model():
         logger.info("Properly trained model loaded successfully!")
 
 @app.route('/')
+@app.route('/index.html')
 def index():
     """Serve the main frontend page."""
-    return render_template('index.html')
+    try:
+        logger.info("Serving index.html page")
+        return render_template('index.html')
+    except Exception as e:
+        logger.error(f"Error serving index.html: {str(e)}")
+        return f"Error loading index.html: {str(e)}", 500
 
 @app.route('/statistics')
 @app.route('/statistics.html')
 def statistics_page():
     """Serve the statistics dashboard page."""
-    return render_template('statistics.html')
+    try:
+        logger.info("Serving statistics.html page")
+        return render_template('statistics.html')
+    except Exception as e:
+        logger.error(f"Error serving statistics.html: {str(e)}")
+        return f"Error loading statistics.html: {str(e)}", 500
+
+@app.route('/assess')
+@app.route('/assess.html')
+@app.route('/predict')
+@app.route('/predict.html')
+def assessment_page():
+    """Serve the heart disease risk assessment page."""
+    try:
+        logger.info("Serving assess.html page")
+        return render_template('assess.html')
+    except Exception as e:
+        logger.error(f"Error serving assess.html: {str(e)}")
+        return f"Error loading assess.html: {str(e)}", 500
+
+@app.route('/debug/routes')
+def debug_routes():
+    """Debug endpoint to show all available routes."""
+    routes = []
+    for rule in app.url_map.iter_rules():
+        routes.append({
+            'endpoint': rule.endpoint,
+            'methods': list(rule.methods),
+            'rule': rule.rule
+        })
+    return jsonify({'routes': routes})
 
 @app.route('/static/<path:filename>')
 def static_files(filename):
