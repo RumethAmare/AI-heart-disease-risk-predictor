@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Disease Risk Predictor</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .logo i {
+            margin-right: 0.5rem;
+            color: #e74c3c;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #2c3e50;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #e74c3c;
+            background: rgba(231, 76, 60, 0.1);
+        }
+
+        .hero-section {
+            text-align: center;
+            padding: 4rem 0;
+            color: white;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            color: #e74c3c;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+
+        .feature-description {
+            color: #7f8c8d;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-button {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-block;
+            transition: transform 0.2s ease;
+        }
+
+        .feature-button:hover {
+            transform: scale(1.05);
+            color: white;
+        }
+
+        .stats-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            margin: 3rem 0;
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .stats-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #e74c3c;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #7f8c8d;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.9rem;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-heartbeat"></i>
+                    Heart Disease Risk Predictor
+                </div>
+                <nav>
+                    <ul class="nav-links">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/statistics">Statistics</a></li>
+                        <li><a href="#predict">Predict</a></li>
+                        <li><a href="#about">About</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="hero-section">
+            <h1 class="hero-title">🩺 AI Heart Disease Risk Predictor</h1>
+            <p class="hero-subtitle">Advanced machine learning model for accurate heart disease risk assessment</p>
+        </div>
+
+        <div class="stats-section">
+            <h2 class="stats-title">📊 Model Performance</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">94.8%</div>
+                    <div class="stat-label">Accuracy</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">16K</div>
+                    <div class="stat-label">Training Records</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">21</div>
+                    <div class="stat-label">Health Attributes</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">95.5%</div>
+                    <div class="stat-label">Precision</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card" onclick="window.location.href='#predict'">
+                <div class="feature-icon">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <h3 class="feature-title">Risk Assessment</h3>
+                <p class="feature-description">Get instant heart disease risk predictions based on 21 health parameters using advanced RandomForest algorithm.</p>
+                <a href="#predict" class="feature-button">Start Assessment</a>
+            </div>
+
+            <div class="feature-card" onclick="window.location.href='/statistics'">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <h3 class="feature-title">Data Visualization</h3>
+                <p class="feature-description">Explore comprehensive statistics and interactive charts showing patterns in heart disease data across all attributes.</p>
+                <a href="/statistics" class="feature-button">View Statistics</a>
+            </div>
+
+            <div class="feature-card" onclick="window.location.href='#about'">
+                <div class="feature-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h3 class="feature-title">ML Insights</h3>
+                <p class="feature-description">Understand how the AI model works, feature importance, and the science behind heart disease predictions.</p>
+                <a href="#about" class="feature-button">Learn More</a>
+            </div>
+        </div>
+
+        <div id="predict" class="stats-section" style="margin-top: 4rem;">
+            <h2 class="stats-title">🚀 Quick Prediction Test</h2>
+            <div style="text-align: center;">
+                <p style="font-size: 1.1rem; color: #7f8c8d; margin-bottom: 2rem;">
+                    Test the prediction API with sample data to see the model in action
+                </p>
+                <button onclick="testPrediction()" class="feature-button" style="font-size: 1.1rem; padding: 1rem 3rem;">
+                    <i class="fas fa-play-circle"></i> Test Prediction API
+                </button>
+                <div id="predictionResult" style="margin-top: 2rem; padding: 1rem; background: #f8f9fa; border-radius: 10px; display: none;">
+                    <h4 style="color: #2c3e50; margin-bottom: 1rem;">Prediction Result:</h4>
+                    <pre id="resultContent" style="text-align: left; background: white; padding: 1rem; border-radius: 5px; overflow: auto;"></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 Heart Disease Risk Predictor. FDM Mini Project - Advanced AI for Healthcare.</p>
+    </footer>
+
+    <script>
+        async function testPrediction() {
+            const testData = {
+                age: 55,
+                gender: "Male",
+                blood_pressure: 140,
+                cholesterol_level: 250,
+                smoking: "Yes",
+                bmi: 28.5,
+                exercise_habits: "Low",
+                family_heart_disease: "Yes",
+                diabetes: "No",
+                high_blood_pressure: "Yes",
+                low_hdl_cholesterol: "Yes",
+                high_ldl_cholesterol: "Yes",
+                alcohol_consumption: "Moderate",
+                stress_level: "High",
+                sugar_consumption: "High",
+                sleep_hours: 6,
+                triglyceride_level: 180,
+                fasting_blood_sugar: 110,
+                crp_level: 3.2,
+                homocysteine_level: 12.5
+            };
+
+            try {
+                const response = await fetch('/api/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(testData)
+                });
+
+                const result = await response.json();
+                
+                document.getElementById('resultContent').textContent = JSON.stringify(result, null, 2);
+                document.getElementById('predictionResult').style.display = 'block';
+                
+                // Scroll to result
+                document.getElementById('predictionResult').scrollIntoView({ behavior: 'smooth' });
+                
+            } catch (error) {
+                document.getElementById('resultContent').textContent = 'Error: ' + error.message;
+                document.getElementById('predictionResult').style.display = 'block';
+            }
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

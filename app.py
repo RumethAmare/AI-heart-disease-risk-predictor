@@ -15,8 +15,8 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Initialize Flask app
-app = Flask(__name__)
+# Initialize Flask app with template and static folders
+app = Flask(__name__, template_folder='.', static_folder='.')
 CORS(app)
 
 # Global predictor instance
@@ -44,10 +44,16 @@ def index():
     """Serve the main frontend page."""
     return render_template('index.html')
 
+@app.route('/statistics')
+@app.route('/statistics.html')
+def statistics_page():
+    """Serve the statistics dashboard page."""
+    return render_template('statistics.html')
+
 @app.route('/static/<path:filename>')
 def static_files(filename):
     """Serve static files."""
-    return send_from_directory('static', filename)
+    return send_from_directory('.', filename)
 
 @app.route('/api/predict', methods=['POST'])
 def predict_heart_disease():
