@@ -233,7 +233,7 @@ class EnhancedHeartDiseasePredictor:
             recommendation = "Low risk detected. Continue healthy lifestyle habits. Routine annual check-ups recommended for prevention."
         
         # Calculate confidence based on consistency of risk factors
-        confidence = min(0.95, 0.6 + abs(clinical_probability - ml_probability))
+        confidence = 1.0 - abs(clinical_probability - ml_probability)
         
         # Convert prediction back to text
         predicted_class = "Yes" if prediction == 1 else "No"
