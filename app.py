@@ -98,24 +98,28 @@ def static_files(filename):
 @app.route('/api/predict', methods=['POST'])
 def predict_heart_disease():
     """
-    API endpoint for heart disease prediction.
+    API endpoint for heart disease prediction (Reduced Model - 13 features).
     
     Expected JSON input:
     {
         "age": 55,
-        "gender": "Male",
         "blood_pressure": 140,
         "cholesterol_level": 200,
-        "smoking": "No",
         "bmi": 28.5,
         "exercise_habits": "Medium",
-        "family_heart_disease": "Yes",
-        "diabetes": "No",
-        "high_blood_pressure": "Yes",
+        "alcohol_consumption": "None",
         "stress_level": "Medium",
         "sleep_hours": 7.0,
-        ...
+        "sugar_consumption": "Medium",
+        "triglyceride_level": 150.0,
+        "fasting_blood_sugar": 90.0,
+        "crp_level": 1.0,
+        "homocysteine_level": 10.0
     }
+    
+    Note: Dropped columns (not needed): Gender, Smoking, Diabetes, 
+    High Blood Pressure, Family Heart Disease, Low HDL Cholesterol, 
+    High LDL Cholesterol
     """
     try:
         # Get JSON data from request
@@ -127,8 +131,8 @@ def predict_heart_disease():
                 'success': False
             }), 400
         
-        # Validate required fields
-        required_fields = ['age', 'gender', 'blood_pressure', 'cholesterol_level', 'smoking', 'bmi']
+        # Validate required fields (updated for reduced model)
+        required_fields = ['age', 'blood_pressure', 'cholesterol_level', 'bmi', 'exercise_habits']
         missing_fields = [field for field in required_fields if field not in data]
         
         if missing_fields:
@@ -137,27 +141,20 @@ def predict_heart_disease():
                 'success': False
             }), 400
         
-        # Convert input data to model format
+        # Convert input data to model format (reduced model - 13 features only)
         model_input = {
             'Age': float(data.get('age')),
-            'Gender': str(data.get('gender')),
             'Blood Pressure': float(data.get('blood_pressure')),
             'Cholesterol Level': float(data.get('cholesterol_level')),
             'Exercise Habits': str(data.get('exercise_habits', 'Medium')),
-            'Smoking': str(data.get('smoking')),
-            'Family Heart Disease': str(data.get('family_heart_disease', 'No')),
-            'Diabetes': str(data.get('diabetes', 'No')),
             'BMI': float(data.get('bmi')),
-            'High Blood Pressure': str(data.get('high_blood_pressure', 'No')),
-            'Low HDL Cholesterol': str(data.get('low_hdl_cholesterol', 'No')),
-            'High LDL Cholesterol': str(data.get('high_ldl_cholesterol', 'No')),
-            'Alcohol Consumption': str(data.get('alcohol_consumption', 'Low')),
+            'Alcohol Consumption': str(data.get('alcohol_consumption', 'None')),
             'Stress Level': str(data.get('stress_level', 'Medium')),
             'Sleep Hours': float(data.get('sleep_hours', 7.0)),
             'Sugar Consumption': str(data.get('sugar_consumption', 'Medium')),
             'Triglyceride Level': float(data.get('triglyceride_level', 150.0)),
-            'Fasting Blood Sugar': float(data.get('fasting_blood_sugar', 100.0)),
-            'CRP Level': float(data.get('crp_level', 2.0)),
+            'Fasting Blood Sugar': float(data.get('fasting_blood_sugar', 90.0)),
+            'CRP Level': float(data.get('crp_level', 1.0)),
             'Homocysteine Level': float(data.get('homocysteine_level', 10.0))
         }
         

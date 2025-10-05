@@ -362,14 +362,7 @@
                                 <input type="number" id="age" name="age" min="18" max="100" required>
                             </div>
                             
-                            <div class="form-group">
-                                <label for="gender">Gender</label>
-                                <select id="gender" name="gender" required>
-                                    <option value="">Select Gender</option>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
-                                </select>
-                            </div>
+
 
                             <!-- Vital Signs -->
                             <div class="form-section-header">🩸 Vital Signs & Measurements</div>
@@ -412,15 +405,7 @@
                             <!-- Lifestyle Factors -->
                             <div class="form-section-header">🏃‍♂️ Lifestyle Factors</div>
                             
-                            <div class="form-group">
-                                <label for="smoking">Smoking Status</label>
-                                <select id="smoking" name="smoking" required>
-                                    <option value="">Select Status</option>
-                                    <option value="Never">Never Smoked</option>
-                                    <option value="Former">Former Smoker</option>
-                                    <option value="Yes">Current Smoker</option>
-                                </select>
-                            </div>
+
                             
                             <div class="form-group">
                                 <label for="exercise_habits">Exercise Habits</label>
@@ -471,50 +456,15 @@
                             <!-- Medical History -->
                             <div class="form-section-header">🏥 Medical History</div>
                             
-                            <div class="form-group">
-                                <label for="diabetes">Diabetes</label>
-                                <select id="diabetes" name="diabetes" required>
-                                    <option value="">Select Status</option>
-                                    <option value="No">No</option>
-                                    <option value="Yes">Yes</option>
-                                </select>
-                            </div>
+
                             
-                            <div class="form-group">
-                                <label for="high_blood_pressure">High Blood Pressure</label>
-                                <select id="high_blood_pressure" name="high_blood_pressure">
-                                    <option value="">Select Status</option>
-                                    <option value="No">No</option>
-                                    <option value="Yes">Yes</option>
-                                </select>
-                            </div>
+
                             
-                            <div class="form-group">
-                                <label for="family_heart_disease">Family History of Heart Disease</label>
-                                <select id="family_heart_disease" name="family_heart_disease">
-                                    <option value="">Select Status</option>
-                                    <option value="No">No</option>
-                                    <option value="Yes">Yes</option>
-                                </select>
-                            </div>
+
                             
-                            <div class="form-group">
-                                <label for="low_hdl_cholesterol">Low HDL Cholesterol</label>
-                                <select id="low_hdl_cholesterol" name="low_hdl_cholesterol">
-                                    <option value="">Select Status</option>
-                                    <option value="No">No</option>
-                                    <option value="Yes">Yes</option>
-                                </select>
-                            </div>
+
                             
-                            <div class="form-group">
-                                <label for="high_ldl_cholesterol">High LDL Cholesterol</label>
-                                <select id="high_ldl_cholesterol" name="high_ldl_cholesterol">
-                                    <option value="">Select Status</option>
-                                    <option value="No">No</option>
-                                    <option value="Yes">Yes</option>
-                                </select>
-                            </div>
+
                         </div>
 
                         <div class="submit-section">
@@ -598,11 +548,7 @@
                     'sleep_hours': 7,
                     'alcohol_consumption': 'None',
                     'stress_level': 'Medium',
-                    'sugar_consumption': 'Medium',
-                    'high_blood_pressure': 'No',
-                    'family_heart_disease': 'No',
-                    'low_hdl_cholesterol': 'No',
-                    'high_ldl_cholesterol': 'No'
+                    'sugar_consumption': 'Medium'
                 };
                 
                 Object.keys(defaults).forEach(key => {
@@ -706,13 +652,18 @@
         // Auto-fill sample data for testing (remove in production)
         function fillSampleData() {
             document.getElementById('age').value = '55';
-            document.getElementById('gender').value = 'Male';
             document.getElementById('blood_pressure').value = '140';
             document.getElementById('cholesterol_level').value = '250';
             document.getElementById('bmi').value = '28.5';
-            document.getElementById('smoking').value = 'Yes';
             document.getElementById('exercise_habits').value = 'Low';
-            document.getElementById('diabetes').value = 'No';
+            document.getElementById('triglyceride_level').value = '180';
+            document.getElementById('fasting_blood_sugar').value = '110';
+            document.getElementById('crp_level').value = '3.5';
+            document.getElementById('homocysteine_level').value = '12.0';
+            document.getElementById('sleep_hours').value = '6';
+            document.getElementById('alcohol_consumption').value = 'Medium';
+            document.getElementById('stress_level').value = 'High';
+            document.getElementById('sugar_consumption').value = 'High';
         }
         
         // Add sample data button for testing
