@@ -19,16 +19,64 @@ def train_properly():
     
     # 1. Load data
     print("📊 Loading dataset...")
-    df = pd.read_csv('heart_disease.csv')
+    df = pd.read_csv('heart_disease_extended.csv')
     print(f"   Dataset: {df.shape[0]} rows, {df.shape[1]} columns")
+    print(f"   Available columns: {list(df.columns)}")
     
-    # 2. Check class distribution
+    # 2. DROP COLUMNS (Configure which columns to remove)
+    print("\n🗑️ Column Dropping Configuration...")
+    
+    # Option A: Drop low-importance columns (recommended based on analysis)
+    low_importance_drops = [
+        'Diabetes',              # 0.0149 importance
+        'Smoking',               # 0.0147 importance  
+        'High Blood Pressure',   # 0.0141 importance
+        'Low HDL Cholesterol',   # 0.0138 importance
+        'Family Heart Disease',  # 0.0135 importance
+        'High LDL Cholesterol',  # 0.0132 importance
+        'Gender',                # 0.0128 importance
+    ]
+    
+    # Option B: Additional optional drops (moderate importance)
+    moderate_drops = [
+        # 'Exercise Habits',       # 0.0240 importance
+        # 'Sugar Consumption',     # 0.0232 importance
+        # 'Alcohol Consumption',   # 0.0228 importance
+        # 'Stress Level',          # 0.0210 importance
+    ]
+    
+    # Choose which drops to apply:
+    use_low_importance_drops = True    # Set to True to drop low-importance features
+    use_moderate_drops = False         # Set to True to also drop moderate features
+    
+    columns_to_drop = []
+    if use_low_importance_drops:
+        columns_to_drop.extend(low_importance_drops)
+    if use_moderate_drops:
+        columns_to_drop.extend(moderate_drops)
+    
+    # Apply column drops
+    valid_columns_to_drop = [col for col in columns_to_drop 
+                            if col in df.columns and col != 'Heart Disease Status']
+    
+    if valid_columns_to_drop:
+        print(f"   🗑️ Dropping {len(valid_columns_to_drop)} columns: {valid_columns_to_drop}")
+        original_shape = df.shape
+        df = df.drop(columns=valid_columns_to_drop)
+        print(f"   📊 Dataset: {original_shape} → {df.shape}")
+        print(f"   📉 Feature reduction: {len(valid_columns_to_drop)}/{original_shape[1]-1} ({len(valid_columns_to_drop)/(original_shape[1]-1)*100:.1f}%)")
+    else:
+        print("   ℹ️ No columns to drop - keeping all features")
+    
+    print(f"   📋 Final features ({df.shape[1]-1}): {[col for col in df.columns if col != 'Heart Disease Status']}")
+    
+    # 3. Check class distribution
     target_counts = df['Heart Disease Status'].value_counts()
     print(f"   Class distribution: {target_counts.to_dict()}")
     imbalance_ratio = target_counts.max() / target_counts.min()
     print(f"   ⚠️ Imbalance ratio: {imbalance_ratio:.1f}:1")
     
-    # 3. Prepare data
+    # 4. Prepare data
     print("\n🔧 Preprocessing data...")
     X = df.drop('Heart Disease Status', axis=1)
     y = df['Heart Disease Status']
