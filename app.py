@@ -47,8 +47,9 @@ def initialize_model():
     
     predictor = EnhancedHeartDiseasePredictor()
     
-    # Check if any model files exist
+    # Check if any model files exist (prioritize Render-optimized model)
     model_files = [
+        'heart_disease_render_optimized.pkl',  # New optimized model for Render
         'heart_disease_model_with_gender.pkl',
         'heart_disease_model_reduced.pkl', 
         'heart_disease_model_FIXED.pkl',
@@ -69,24 +70,28 @@ def initialize_model():
             logger.error(f"Failed to create fallback model: {e}")
             raise Exception("No trained model available and fallback creation failed")
     
-    # Try to load the model with gender first (best balance)
-    if not predictor.load_model('heart_disease_model_with_gender.pkl'):
-        logger.info("Model with gender not found. Trying reduced model...")
-        if not predictor.load_model('heart_disease_model_reduced.pkl'):
-            logger.info("Reduced model not found. Trying FIXED model...")
-            if not predictor.load_model('heart_disease_model_FIXED.pkl'):
-                logger.info("FIXED model not found. Using original model...")
-                if not predictor.load_model('heart_disease_model.pkl'):
-                    logger.error("No model could be loaded!")
-                    raise Exception("No trained model available")
+    # Try to load the Render-optimized model first
+    if not predictor.load_model('heart_disease_render_optimized.pkl'):
+        logger.info("Render-optimized model not found. Trying model with gender...")
+        if not predictor.load_model('heart_disease_model_with_gender.pkl'):
+            logger.info("Model with gender not found. Trying reduced model...")
+            if not predictor.load_model('heart_disease_model_reduced.pkl'):
+                logger.info("Reduced model not found. Trying FIXED model...")
+                if not predictor.load_model('heart_disease_model_FIXED.pkl'):
+                    logger.info("FIXED model not found. Using original model...")
+                    if not predictor.load_model('heart_disease_model.pkl'):
+                        logger.error("No model could be loaded!")
+                        raise Exception("No trained model available")
+                    else:
+                        logger.info("Original model loaded successfully!")
                 else:
-                    logger.info("Original model loaded successfully!")
+                    logger.info("FIXED model loaded successfully!")
             else:
-                logger.info("FIXED model loaded successfully!")
+                logger.info("Reduced model loaded successfully! (35% fewer features, 97.1% accuracy)")
         else:
-            logger.info("Reduced model loaded successfully! (35% fewer features, 97.1% accuracy)")
+            logger.info("Model with gender loaded successfully! (14 features, optimized performance)")
     else:
-        logger.info("Model with gender loaded successfully! (14 features, optimized performance)")
+        logger.info("🚀 Render-optimized model loaded successfully! (Production-grade ML predictions)")
 
 @app.route('/')
 @app.route('/index.html')
