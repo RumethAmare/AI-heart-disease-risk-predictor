@@ -149,6 +149,10 @@ class EnhancedHeartDiseasePredictor:
         if not self.is_loaded:
             raise ValueError("Model not loaded")
         
+        # Check if this is a rule-based model (fallback for production)
+        if self.model_data.get('is_rule_based', False):
+            return self._predict_rule_based(input_data)
+        
         # Calculate clinical risk score
         clinical_score = self.calculate_clinical_risk_score(input_data)
         
@@ -252,97 +256,84 @@ class EnhancedHeartDiseasePredictor:
     
     def create_basic_model(self):
         """
-        Create a basic rule-based model for production deployment when no pre-trained model exists.
-        This ensures the app works in environments like Render where model files might not be available.
+        Create a simple rule-based model for production deployment when no pre-trained model exists.
+        This uses clinical guidelines without requiring scikit-learn or model training.
         """
-        from sklearn.ensemble import RandomForestClassifier
-        from sklearn.model_selection import train_test_split
-        import pandas as pd
-        
         try:
-            # Create a simple synthetic dataset for basic functionality
-            # This is just to ensure the app works in production
-            np.random.seed(42)
-            n_samples = 1000
-            
-            # Generate synthetic data that mimics heart disease patterns
-            data = {
-                'Age': np.random.normal(55, 15, n_samples).clip(18, 90),
-                'Gender': np.random.choice(['Male', 'Female'], n_samples),
-                'Blood Pressure': np.random.normal(130, 20, n_samples).clip(80, 200),
-                'Cholesterol Level': np.random.normal(200, 50, n_samples).clip(100, 400),
-                'BMI': np.random.normal(25, 5, n_samples).clip(15, 50),
-                'Exercise Habits': np.random.choice(['Low', 'Medium', 'High'], n_samples),
-                'Alcohol Consumption': np.random.choice(['None', 'Light', 'Moderate', 'Heavy'], n_samples),
-                'Stress Level': np.random.choice(['Low', 'Medium', 'High'], n_samples),
-                'Sleep Hours': np.random.normal(7, 1.5, n_samples).clip(3, 12),
-                'Sugar Consumption': np.random.choice(['Low', 'Medium', 'High'], n_samples),
-                'Triglyceride Level': np.random.normal(150, 40, n_samples).clip(50, 400),
-                'Fasting Blood Sugar': np.random.normal(95, 20, n_samples).clip(60, 200),
-                'CRP Level': np.random.exponential(2, n_samples).clip(0.1, 10),
-                'Homocysteine Level': np.random.normal(10, 3, n_samples).clip(5, 25)
-            }
-            
-            df = pd.DataFrame(data)
-            
-            # Create target based on realistic risk factors
-            risk_scores = []
-            for _, row in df.iterrows():
-                score = 0
-                # Age risk
-                if row['Age'] > 65: score += 0.3
-                elif row['Age'] > 55: score += 0.2
-                elif row['Age'] > 45: score += 0.1
-                
-                # Gender risk (males higher risk)
-                if row['Gender'] == 'Male': score += 0.1
-                
-                # Blood pressure risk
-                if row['Blood Pressure'] > 140: score += 0.2
-                elif row['Blood Pressure'] > 130: score += 0.1
-                
-                # Cholesterol risk
-                if row['Cholesterol Level'] > 240: score += 0.15
-                elif row['Cholesterol Level'] > 200: score += 0.1
-                
-                # BMI risk
-                if row['BMI'] > 30: score += 0.1
-                elif row['BMI'] > 25: score += 0.05
-                
-                # Exercise protection
-                if row['Exercise Habits'] == 'High': score -= 0.1
-                elif row['Exercise Habits'] == 'Low': score += 0.1
-                
-                risk_scores.append(score)
-            
-            # Convert to binary classification (threshold at median + noise)
-            threshold = np.median(risk_scores) + np.random.normal(0, 0.1, len(risk_scores))
-            y = (np.array(risk_scores) > threshold).astype(int)
-            
-            # Prepare features
-            X = df.copy()
-            
-            # Encode categorical variables
-            categorical_cols = ['Gender', 'Exercise Habits', 'Alcohol Consumption', 'Stress Level', 'Sugar Consumption']
-            X_encoded = pd.get_dummies(X, columns=categorical_cols)
-            
-            # Train a basic model
-            X_train, X_test, y_train, y_test = train_test_split(X_encoded, y, test_size=0.2, random_state=42)
-            
-            model = RandomForestClassifier(n_estimators=50, max_depth=10, random_state=42)
-            model.fit(X_train, y_train)
-            
-            # Store the model data
+            # Create a simple rule-based "model" that doesn't require training
             self.model_data = {
-                'model': model,
-                'feature_names': list(X_encoded.columns),
-                'feature_means': X_encoded.mean().to_dict(),
-                'original_columns': list(df.columns)
+                'model': 'rule_based',  # Special marker for rule-based predictions
+                'model_type': 'clinical_rules',
+                'is_rule_based': True
             }
             
             self.is_loaded = True
+            print("Rule-based fallback model created successfully!")
             return True
             
         except Exception as e:
             print(f"Error creating basic model: {e}")
             return False
+    
+    def _predict_rule_based(self, input_data):
+        """
+        Pure rule-based prediction using clinical guidelines.
+        This method works without any ML dependencies.
+        """
+        try:
+            # Calculate clinical risk score
+            clinical_score = self.calculate_clinical_risk_score(input_data)
+            
+            # Convert clinical score to probability (0-1)
+            risk_probability = min(clinical_score / 100.0, 0.95)  # Cap at 95%
+            
+            # Determine prediction class
+            predicted_class = "Yes" if risk_probability > 0.5 else "No"
+            
+            # Determine risk level
+            if risk_probability < 0.3:
+                risk_level = 'Low'
+                color = '#28a745'
+                recommendation = 'Continue maintaining a healthy lifestyle with regular exercise and balanced diet.'
+            elif risk_probability < 0.6:
+                risk_level = 'Medium'
+                color = '#ffc107'
+                recommendation = 'Consider lifestyle improvements and regular health check-ups. Consult your doctor.'
+            else:
+                risk_level = 'High'
+                color = '#dc3545'
+                recommendation = 'Seek immediate medical attention for comprehensive cardiovascular assessment.'
+            
+            # Calculate confidence (rule-based predictions have consistent confidence)
+            confidence = 0.75  # Rule-based confidence
+            
+            return {
+                'prediction': predicted_class,
+                'risk_probability': float(risk_probability),
+                'risk_percentage': f"{risk_probability * 100:.1f}%",
+                'confidence': f"{confidence * 100:.1f}%",
+                'risk_level': risk_level,
+                'risk_color': color,
+                'recommendation': recommendation,
+                'clinical_score': clinical_score,
+                'ml_probability': float(risk_probability),  # Same as risk_probability for rule-based
+                'combined_approach': False,  # This is pure rule-based
+                'model_type': 'rule_based_fallback'
+            }
+            
+        except Exception as e:
+            print(f"Error in rule-based prediction: {e}")
+            # Return a safe default
+            return {
+                'prediction': 'Unknown',
+                'risk_probability': 0.5,
+                'risk_percentage': '50.0%',
+                'confidence': '50.0%',
+                'risk_level': 'Medium',
+                'risk_color': '#ffc107',
+                'recommendation': 'Unable to assess risk. Please consult with a healthcare professional.',
+                'clinical_score': 50,
+                'ml_probability': 0.5,
+                'combined_approach': False,
+                'model_type': 'error_fallback'
+            }
