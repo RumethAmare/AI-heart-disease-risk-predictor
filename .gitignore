@@ -1,100 +1,62 @@
-# Python# Python
-
-__pycache__/__pycache__/
-
-*.py[cod]*.py[cod]
-
-*$py.class*$py.class
-
-*.so*.so
-
-.Python.Python
-
-build/build/
-
-develop-eggs/develop-eggs/
-
-dist/dist/
-
-downloads/downloads/
-
-eggs/eggs/
-
-.eggs/.eggs/
-
-lib/lib/
-
-lib64/lib64/
-
-parts/parts/
-
-sdist/sdist/
-
-var/var/
-
-wheels/wheels/
-
-*.egg-info/pip-wheel-metadata/
-
-.installed.cfgshare/python-wheels/
-
-*.egg*.egg-info/
-
-MANIFEST.installed.cfg
-
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
 *.egg
+MANIFEST
 
-# Virtual EnvironmentMANIFEST
-
-.venv/
-
-venv/# Virtual Environment
-
-ENV/.venv/
-
-env/venv/
-
+venv/
 ENV/
+env/
 
-# IDEenv/
-
+# IDE
 .vscode/
-
-.idea/# IDE
-
-*.swp.vscode/
-
-*.swo.idea/
-
-*~*.swp
-
+.idea/
+*.swp
 *.swo
+*~
 
 # OS
-
-.DS_Store# OS
-
-Thumbs.db.DS_Store
-
+.DS_Store
 Thumbs.db
 
 # Logs
-
-*.log# Logs
-
 *.log
 
-# Don't ignore model files - we want them in deployment
-
-!*.pkl# Temporary files
-
+# Temporary files
 *.tmp
 
+# Environment variables
+.env
+
+# EXPLICITLY INCLUDE MODEL FILES FOR RENDER DEPLOYMENT
+!*.pkl
+!heart_disease_*.pkl
+!*render_optimized*.pkl
+
 # Include important deployment files
-
-!requirements.txt# Environment variables
-
-!Procfile.env
+!requirements.txt
+!Procfile
 !runtime.txt
 !app.py
 !enhanced_model_wrapper.py
+!frontend/
+!create_model.py

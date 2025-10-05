@@ -92,6 +92,13 @@ def initialize_model():
             logger.info("Model with gender loaded successfully! (14 features, optimized performance)")
     else:
         logger.info("🚀 Render-optimized model loaded successfully! (Production-grade ML predictions)")
+        
+        # Validate model signature if available
+        if hasattr(predictor, 'model_data') and predictor.model_data and 'model_signature' in predictor.model_data:
+            signature = predictor.model_data['model_signature']
+            logger.info(f"📋 Model Details: Version {signature.get('model_version', 'Unknown')}, "
+                       f"Accuracy {signature.get('accuracy', 'Unknown'):.4f}, "
+                       f"Features {signature.get('n_features', 'Unknown')}")
 
 @app.route('/')
 @app.route('/index.html')
@@ -340,28 +347,53 @@ def predict_heart_disease():
 
 @app.route('/api/model-info', methods=['GET'])
 def get_model_info():
-    """Get information about the trained model."""
+    """Get detailed information about the trained model."""
     try:
-        if predictor is None or predictor.model is None:
+        if predictor is None:
             return jsonify({
-                'error': 'Model not loaded',
+                'error': 'Predictor not initialized',
                 'success': False
             }), 500
         
-        # Get feature importance if available
-        feature_importance = predictor.get_feature_importance()
-        importance_data = None
-        
-        if feature_importance is not None:
-            importance_data = feature_importance.head(10).to_dict('records')
-        
+        # Basic model info
         model_info = {
             'success': True,
-            'model_type': type(predictor.model).__name__,
-            'feature_count': len(predictor.feature_columns) if predictor.feature_columns else 0,
-            'model_metrics': predictor.model_metrics,
-            'feature_importance': importance_data
+            'is_loaded': predictor.is_loaded,
+            'has_model_data': predictor.model_data is not None
         }
+        
+        if predictor.model_data:
+            # Get model signature if available
+            if 'model_signature' in predictor.model_data:
+                signature = predictor.model_data['model_signature']
+                model_info.update({
+                    'model_signature': signature,
+                    'model_version': signature.get('model_version', 'Unknown'),
+                    'accuracy': signature.get('accuracy', 'Unknown'),
+                    'n_features': signature.get('n_features', 'Unknown'),
+                    'training_date': signature.get('training_date', 'Unknown'),
+                    'feature_order': signature.get('feature_order', [])
+                })
+            
+            # Get model info
+            if 'model_info' in predictor.model_data:
+                info = predictor.model_data['model_info']
+                model_info.update({
+                    'model_type': info.get('model_type', 'Unknown'),
+                    'optimized_for': info.get('optimized_for', 'Unknown'),
+                    'version': info.get('version', 'Unknown')
+                })
+            
+            # Get feature information
+            if 'feature_columns' in predictor.model_data:
+                model_info['feature_columns'] = predictor.model_data['feature_columns']
+                model_info['feature_count'] = len(predictor.model_data['feature_columns'])
+            
+            # Check if rule-based fallback
+            if predictor.model_data.get('is_rule_based', False):
+                model_info['prediction_method'] = 'rule_based_fallback'
+            else:
+                model_info['prediction_method'] = 'machine_learning'
         
         return jsonify(model_info)
         
