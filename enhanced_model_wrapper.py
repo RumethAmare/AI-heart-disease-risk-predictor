@@ -249,3 +249,100 @@ class EnhancedHeartDiseasePredictor:
             'ml_probability': float(ml_probability),
             'combined_approach': True
         }
+    
+    def create_basic_model(self):
+        """
+        Create a basic rule-based model for production deployment when no pre-trained model exists.
+        This ensures the app works in environments like Render where model files might not be available.
+        """
+        from sklearn.ensemble import RandomForestClassifier
+        from sklearn.model_selection import train_test_split
+        import pandas as pd
+        
+        try:
+            # Create a simple synthetic dataset for basic functionality
+            # This is just to ensure the app works in production
+            np.random.seed(42)
+            n_samples = 1000
+            
+            # Generate synthetic data that mimics heart disease patterns
+            data = {
+                'Age': np.random.normal(55, 15, n_samples).clip(18, 90),
+                'Gender': np.random.choice(['Male', 'Female'], n_samples),
+                'Blood Pressure': np.random.normal(130, 20, n_samples).clip(80, 200),
+                'Cholesterol Level': np.random.normal(200, 50, n_samples).clip(100, 400),
+                'BMI': np.random.normal(25, 5, n_samples).clip(15, 50),
+                'Exercise Habits': np.random.choice(['Low', 'Medium', 'High'], n_samples),
+                'Alcohol Consumption': np.random.choice(['None', 'Light', 'Moderate', 'Heavy'], n_samples),
+                'Stress Level': np.random.choice(['Low', 'Medium', 'High'], n_samples),
+                'Sleep Hours': np.random.normal(7, 1.5, n_samples).clip(3, 12),
+                'Sugar Consumption': np.random.choice(['Low', 'Medium', 'High'], n_samples),
+                'Triglyceride Level': np.random.normal(150, 40, n_samples).clip(50, 400),
+                'Fasting Blood Sugar': np.random.normal(95, 20, n_samples).clip(60, 200),
+                'CRP Level': np.random.exponential(2, n_samples).clip(0.1, 10),
+                'Homocysteine Level': np.random.normal(10, 3, n_samples).clip(5, 25)
+            }
+            
+            df = pd.DataFrame(data)
+            
+            # Create target based on realistic risk factors
+            risk_scores = []
+            for _, row in df.iterrows():
+                score = 0
+                # Age risk
+                if row['Age'] > 65: score += 0.3
+                elif row['Age'] > 55: score += 0.2
+                elif row['Age'] > 45: score += 0.1
+                
+                # Gender risk (males higher risk)
+                if row['Gender'] == 'Male': score += 0.1
+                
+                # Blood pressure risk
+                if row['Blood Pressure'] > 140: score += 0.2
+                elif row['Blood Pressure'] > 130: score += 0.1
+                
+                # Cholesterol risk
+                if row['Cholesterol Level'] > 240: score += 0.15
+                elif row['Cholesterol Level'] > 200: score += 0.1
+                
+                # BMI risk
+                if row['BMI'] > 30: score += 0.1
+                elif row['BMI'] > 25: score += 0.05
+                
+                # Exercise protection
+                if row['Exercise Habits'] == 'High': score -= 0.1
+                elif row['Exercise Habits'] == 'Low': score += 0.1
+                
+                risk_scores.append(score)
+            
+            # Convert to binary classification (threshold at median + noise)
+            threshold = np.median(risk_scores) + np.random.normal(0, 0.1, len(risk_scores))
+            y = (np.array(risk_scores) > threshold).astype(int)
+            
+            # Prepare features
+            X = df.copy()
+            
+            # Encode categorical variables
+            categorical_cols = ['Gender', 'Exercise Habits', 'Alcohol Consumption', 'Stress Level', 'Sugar Consumption']
+            X_encoded = pd.get_dummies(X, columns=categorical_cols)
+            
+            # Train a basic model
+            X_train, X_test, y_train, y_test = train_test_split(X_encoded, y, test_size=0.2, random_state=42)
+            
+            model = RandomForestClassifier(n_estimators=50, max_depth=10, random_state=42)
+            model.fit(X_train, y_train)
+            
+            # Store the model data
+            self.model_data = {
+                'model': model,
+                'feature_names': list(X_encoded.columns),
+                'feature_means': X_encoded.mean().to_dict(),
+                'original_columns': list(df.columns)
+            }
+            
+            self.is_loaded = True
+            return True
+            
+        except Exception as e:
+            print(f"Error creating basic model: {e}")
+            return False

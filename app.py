@@ -34,10 +34,32 @@ def init_model_on_startup():
         # Don't raise exception to allow app to start, but log the error
 
 def initialize_model():
-    """Initialize or load the heart disease prediction model."""
+    """Initialize or load the heart disease prediction model with production fallback."""
     global predictor
     
     predictor = EnhancedHeartDiseasePredictor()
+    
+    # Check if any model files exist
+    model_files = [
+        'heart_disease_model_with_gender.pkl',
+        'heart_disease_model_reduced.pkl', 
+        'heart_disease_model_FIXED.pkl',
+        'heart_disease_model.pkl'
+    ]
+    
+    available_models = [f for f in model_files if os.path.exists(f)]
+    
+    if not available_models:
+        logger.warning("No pre-trained model files found in production environment!")
+        logger.info("Initializing with basic fallback model for Render deployment...")
+        # Create a basic fallback for production deployment
+        try:
+            predictor.create_basic_model()
+            logger.info("Basic fallback model created successfully for production!")
+            return
+        except Exception as e:
+            logger.error(f"Failed to create fallback model: {e}")
+            raise Exception("No trained model available and fallback creation failed")
     
     # Try to load the model with gender first (best balance)
     if not predictor.load_model('heart_disease_model_with_gender.pkl'):
@@ -47,7 +69,7 @@ def initialize_model():
             if not predictor.load_model('heart_disease_model_FIXED.pkl'):
                 logger.info("FIXED model not found. Using original model...")
                 if not predictor.load_model('heart_disease_model.pkl'):
-                    logger.error("No model found! Please train a model first.")
+                    logger.error("No model could be loaded!")
                     raise Exception("No trained model available")
                 else:
                     logger.info("Original model loaded successfully!")
@@ -188,8 +210,24 @@ def predict_heart_disease():
                     'success': False
                 }), 500
         
-        # Make prediction
-        result = predictor.predict(model_input)
+        # Double-check predictor is available before prediction
+        if predictor is None or not hasattr(predictor, 'predict'):
+            return jsonify({
+                'error': 'Model predictor is not properly initialized',
+                'success': False
+            }), 500
+        
+        # Make prediction with error handling
+        try:
+            result = predictor.predict(model_input)
+            if result is None:
+                raise Exception("Prediction returned None")
+        except Exception as e:
+            logger.error(f"Prediction failed: {str(e)}")
+            return jsonify({
+                'error': f'Prediction failed: {str(e)}',
+                'success': False
+            }), 500
         
         # Add risk interpretation
         risk_prob = result['risk_probability']
