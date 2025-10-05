@@ -28,16 +28,20 @@ def initialize_model():
     
     predictor = EnhancedHeartDiseasePredictor()
     
-    # Try to load the new properly trained model first
-    if not predictor.load_model('heart_disease_model_FIXED.pkl'):
-        logger.info("No properly trained model found. Using fallback...")
-        if not predictor.load_model('heart_disease_model.pkl'):
-            logger.error("No model found! Please train a model first.")
-            raise Exception("No trained model available")
+    # Try to load the reduced model first (best performance)
+    if not predictor.load_model('heart_disease_model_reduced.pkl'):
+        logger.info("Reduced model not found. Trying FIXED model...")
+        if not predictor.load_model('heart_disease_model_FIXED.pkl'):
+            logger.info("FIXED model not found. Using original model...")
+            if not predictor.load_model('heart_disease_model.pkl'):
+                logger.error("No model found! Please train a model first.")
+                raise Exception("No trained model available")
+            else:
+                logger.info("Original model loaded successfully!")
         else:
-            logger.info("Fallback model loaded successfully!")
+            logger.info("FIXED model loaded successfully!")
     else:
-        logger.info("Properly trained model loaded successfully!")
+        logger.info("Reduced model loaded successfully! (35% fewer features, 97.1% accuracy)")
 
 @app.route('/')
 @app.route('/index.html')

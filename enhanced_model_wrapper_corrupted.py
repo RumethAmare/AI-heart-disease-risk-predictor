@@ -1,4 +1,11 @@
-#!/usr/bin/env python3
+# These "dropped" columns are still being used in clinical scoring:
+smoking = input_data.get('Smoking', 'No')                    # Still used
+if input_data.get('Diabetes', 'No') == 'Yes':                # Still used  
+if input_data.get('High Blood Pressure', 'No') == 'Yes':     # Still used
+if input_data.get('Low HDL Cholesterol', 'No') == 'Yes':     # Still used
+if input_data.get('Family Heart Disease', 'No') == 'Yes':    # Still used
+if input_data.get('High LDL Cholesterol', 'No') == 'Yes':    # Still used
+if input_data.get('Gender', 'Male') == 'Male':               # Still used#!/usr/bin/env python3
 """
 Enhanced Model Wrapper with Realistic Risk Assessment
 """
@@ -92,6 +99,7 @@ class EnhancedHeartDiseasePredictor:
             risk_score += 8
         elif exercise == 'Medium':
             risk_score += 3
+        # High exercise is protective (no addition)
         
         # High blood pressure
         if input_data.get('High Blood Pressure', 'No') == 'Yes':
