@@ -15,7 +15,7 @@ import joblib
 def analyze_feature_importance():
     """Analyze feature importance to help decide which columns to drop"""
     
-    print("🔍 FEATURE IMPORTANCE ANALYSIS")
+    print("FEATURE IMPORTANCE ANALYSIS")
     print("=" * 60)
     
     # Load and preprocess data quickly
@@ -50,25 +50,25 @@ def analyze_feature_importance():
         'importance': rf.feature_importances_
     }).sort_values('importance', ascending=False)
     
-    print("📊 Feature Importance Ranking:")
+    print("Feature Importance Ranking:")
     print("-" * 40)
     for i, (_, row) in enumerate(importance_df.iterrows()):
-        status = "🟢 Keep" if row['importance'] > 0.05 else "🔴 Consider Dropping" if row['importance'] < 0.02 else "🟡 Maybe Drop"
+        status = "Keep" if row['importance'] > 0.05 else "Consider Dropping" if row['importance'] < 0.02 else "Maybe Drop"
         print(f"{i+1:2d}. {row['feature']:<25}: {row['importance']:.4f} {status}")
     
     # Suggest columns to drop
     low_importance = importance_df[importance_df['importance'] < 0.02]['feature'].tolist()
     if low_importance:
-        print(f"\n💡 Suggested columns to drop (importance < 0.02): {low_importance}")
+        print(f"\nSuggested columns to drop (importance < 0.02): {low_importance}")
     else:
-        print(f"\n✅ All features have decent importance (>= 0.02)")
+        print(f"\nAll features have decent importance (>= 0.02)")
     
     return importance_df
 
 def train_with_column_dropping():
     """Train model with configurable column dropping"""
     
-    print("\n🚀 TRAINING WITH COLUMN DROPPING")
+    print("\nTRAINING WITH COLUMN DROPPING")
     print("=" * 60)
     
     # 1. Load data
@@ -243,7 +243,7 @@ def train_with_column_dropping():
     return model_data
 
 if __name__ == "__main__":
-    print("🔬 HEART DISEASE MODEL TRAINING WITH FEATURE SELECTION")
+    print("HEART DISEASE MODEL TRAINING WITH FEATURE SELECTION")
     print("=" * 70)
     
     # First analyze feature importance
@@ -252,7 +252,7 @@ if __name__ == "__main__":
     # Then train with column dropping
     model_data = train_with_column_dropping()
     
-    print(f"\n🔗 Next steps:")
+    print(f"\nNext steps:")
     print(f"1. Update Flask app to use: heart_disease_model_dropped_features.pkl")
     print(f"2. Test the model with reduced features")
     print(f"3. Deploy if performance is satisfactory")
