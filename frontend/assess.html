@@ -219,7 +219,7 @@
             padding: 1.5rem;
             border-radius: 15px;
             margin-bottom: 1rem;
-            border-left: 4px solid #e74c3c;
+            border-left: 4px solid ;
         }
 
         .risk-level {
@@ -229,7 +229,7 @@
         }
 
         .risk-percentage {
-            font-size: 2rem;
+            font-size: 3rem;
             font-weight: 700;
             margin-bottom: 1rem;
         }
@@ -296,6 +296,74 @@
             color: #7f8c8d;
             font-size: 0.9rem;
             line-height: 1.5;
+        }
+
+        .high-attributes-section {
+            background: #fff5f5;
+            border: 1px solid #fed7d7;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .high-attributes-section h4 {
+            color: #e53e3e;
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .high-attributes-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .high-attribute-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+            background: #ffffff;
+            border: 1px solid #fed7d7;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .high-attribute-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .attribute-name {
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .attribute-values {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            color: #4a5568;
+        }
+
+        .current-value {
+            font-weight: 600;
+            color: #e53e3e;
+        }
+
+        .normal-range {
+            color: #718096;
+            font-size: 0.75rem;
+        }
+
+        .no-high-attributes {
+            text-align: center;
+            color: #38a169;
+            font-style: italic;
+            padding: 1rem;
         }
 
         @media (max-width: 768px) {
@@ -599,22 +667,145 @@
             }
         });
         
+        function analyzeHighAttributes(inputData) {
+            // Define normal/average limits based on medical standards
+            const normalLimits = {
+                'Blood Pressure': { max: 140, unit: 'mmHg', description: 'Systolic BP > 140 indicates hypertension' },
+                'Cholesterol Level': { max: 220, unit: 'mg/dL', description: 'Total cholesterol > 220 increases risk' },
+                'BMI': { max: 27, unit: 'kg/m²', description: 'BMI > 27 indicates overweight' },
+                'CRP Level': { max: 1.0, unit: 'mg/L', description: 'Elevated CRP indicates inflammation' },
+                'Homocysteine Level': { max: 12, unit: 'μmol/L', description: 'High homocysteine linked to heart disease' },
+                'Triglyceride Level': { max: 150, unit: 'mg/dL', description: 'High triglycerides increase cardiac risk' },
+                'Fasting Blood Sugar': { max: 100, unit: 'mg/dL', description: 'Elevated glucose indicates diabetes risk' },
+                'Sleep Hours': { min: 6, max: 9, unit: 'hours', description: 'Poor sleep quality affects heart health' }
+            };
+
+            const categoricalRisks = {
+                'Exercise Habits': { risk: 'Low', description: 'Low exercise increases heart disease risk' },
+                'Stress Level': { risk: 'High', description: 'High stress contributes to cardiovascular problems' },
+                'Alcohol Consumption': { risk: 'Heavy', description: 'Heavy drinking damages the cardiovascular system' },
+                'Sugar Consumption': { risk: 'High', description: 'High sugar intake increases metabolic risk' }
+            };
+
+            const highAttributes = [];
+
+            // Check numerical attributes
+            Object.keys(normalLimits).forEach(attr => {
+                if (inputData[attr] !== undefined) {
+                    const value = parseFloat(inputData[attr]);
+                    const limits = normalLimits[attr];
+                    
+                    let isHigh = false;
+                    let normalRange = '';
+                    
+                    if (limits.max && limits.min) {
+                        // Range check (like Sleep Hours)
+                        isHigh = value < limits.min || value > limits.max;
+                        normalRange = `${limits.min}-${limits.max} ${limits.unit}`;
+                    } else if (limits.max) {
+                        // Maximum check
+                        isHigh = value > limits.max;
+                        normalRange = `≤ ${limits.max} ${limits.unit}`;
+                    }
+                    
+                    if (isHigh) {
+                        highAttributes.push({
+                            name: attr,
+                            currentValue: `${value} ${limits.unit}`,
+                            normalRange: normalRange,
+                            description: limits.description
+                        });
+                    }
+                }
+            });
+
+            // Check categorical attributes
+            Object.keys(categoricalRisks).forEach(attr => {
+                if (inputData[attr] !== undefined) {
+                    const value = inputData[attr];
+                    const risk = categoricalRisks[attr];
+                    
+                    if (value === risk.risk) {
+                        const normalValue =
+                                          attr === 'Exercise Habits' ? 'High' :
+                                          attr === 'Stress Level' ? 'Low' :
+                                          attr === 'Alcohol Consumption' ? 'None' : 'Low' ;
+                                          attr === 'Sugar Consumption' ? 'Low' : 'Normal';
+                        
+                        highAttributes.push({
+                            name: attr,
+                            currentValue: value,
+                            normalRange: `Optimal: ${normalValue}`,
+                            description: risk.description
+                        });
+                    }
+                }
+            });
+
+            return highAttributes;
+        }
+        
+        function generateHighAttributesSection(inputData) {
+            const highAttributes = analyzeHighAttributes(inputData);
+            
+            if (highAttributes.length === 0) {
+                return `
+                    <div class="high-attributes-section">
+                        <h4>
+                            <i class="fas fa-check-circle"></i> 
+                            Attributes Analysis
+                        </h4>
+                        <div class="no-high-attributes">
+                            <i class="fas fa-thumbs-up"></i> All measured values are within normal ranges!
+                        </div>
+                    </div>
+                `;
+            }
+            
+            const attributesList = highAttributes.map(attr => `
+                <li class="high-attribute-item">
+                    <span class="attribute-name">${attr.name}</span>
+                    <div class="attribute-values">
+                        <span class="current-value">${attr.currentValue}</span>
+                        <span class="normal-range">(${attr.normalRange})</span>
+                    </div>
+                </li>
+            `).join('');
+            
+            return `
+                <div class="high-attributes-section">
+                    <h4>
+                        <i class="fas fa-exclamation-triangle"></i> 
+                        Attributes Above Average Limits
+                    </h4>
+                    <ul class="high-attributes-list">
+                        ${attributesList}
+                    </ul>
+                    <p style="font-size: 0.75rem; color: #718096; margin-top: 0.75rem; font-style: italic;">
+                        <i class="fas fa-info-circle"></i> 
+                        These factors may contribute to increased cardiovascular risk. Consult your healthcare provider for personalized advice.
+                    </p>
+                </div>
+            `;
+        }
+        
         function displayResults(result) {
             const resultsDisplay = document.getElementById('resultsDisplay');
             const riskColor = getRiskColor(result.risk_level);
-            
+            //style="color: ${riskColor}, ${getRiskIcon(result.risk_level)} 
+
             resultsDisplay.innerHTML = `
-                <div class="result-card">
-                    <div class="risk-level" style="color: ${riskColor}">
-                        ${getRiskIcon(result.risk_level)} ${result.risk_level} Risk
+                <div class="result-card" style="color: ${riskColor};">
+                    <div class="risk-level" style="color: black;">
+                        ${result.risk_level} Risk
                     </div>
-                    <div class="risk-percentage" style="color: ${riskColor}">
+                    <div class="risk-percentage" style="color: black;">
                         ${result.risk_percentage}
                     </div>
                     <div class="confidence-level">
                         Confidence: ${result.confidence}
                     </div>
-                    <div class="recommendation">
+                    <div class="recommendation" style="color: black;">
                         <strong>💡 Recommendation:</strong><br>
                         ${result.recommendation}
                     </div>
@@ -630,6 +821,8 @@
                         
                     </p>
                 </div>
+                
+                ${generateHighAttributesSection(result.input_data)}
             `;
             
             resultsDisplay.style.display = 'block';
