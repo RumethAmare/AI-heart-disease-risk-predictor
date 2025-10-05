@@ -98,11 +98,12 @@ def static_files(filename):
 @app.route('/api/predict', methods=['POST'])
 def predict_heart_disease():
     """
-    API endpoint for heart disease prediction (Reduced Model - 13 features).
+    API endpoint for heart disease prediction (Reduced Model - 14 features with Gender).
     
     Expected JSON input:
     {
         "age": 55,
+        "gender": "Male",
         "blood_pressure": 140,
         "cholesterol_level": 200,
         "bmi": 28.5,
@@ -117,9 +118,9 @@ def predict_heart_disease():
         "homocysteine_level": 10.0
     }
     
-    Note: Dropped columns (not needed): Gender, Smoking, Diabetes, 
+    Note: Dropped columns (not needed): Smoking, Diabetes, 
     High Blood Pressure, Family Heart Disease, Low HDL Cholesterol, 
-    High LDL Cholesterol
+    High LDL Cholesterol (6 columns dropped, Gender retained)
     """
     try:
         # Get JSON data from request
@@ -131,8 +132,8 @@ def predict_heart_disease():
                 'success': False
             }), 400
         
-        # Validate required fields (updated for reduced model)
-        required_fields = ['age', 'blood_pressure', 'cholesterol_level', 'bmi', 'exercise_habits']
+        # Validate required fields (updated for reduced model with Gender)
+        required_fields = ['age', 'gender', 'blood_pressure', 'cholesterol_level', 'bmi', 'exercise_habits']
         missing_fields = [field for field in required_fields if field not in data]
         
         if missing_fields:
@@ -141,9 +142,10 @@ def predict_heart_disease():
                 'success': False
             }), 400
         
-        # Convert input data to model format (reduced model - 13 features only)
+        # Convert input data to model format (reduced model - 14 features with Gender)
         model_input = {
             'Age': float(data.get('age')),
+            'Gender': str(data.get('gender')),
             'Blood Pressure': float(data.get('blood_pressure')),
             'Cholesterol Level': float(data.get('cholesterol_level')),
             'Exercise Habits': str(data.get('exercise_habits', 'Medium')),

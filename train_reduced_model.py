@@ -26,7 +26,7 @@ def train_with_dropped_columns():
     # 2. Define columns to drop based on feature importance analysis
     print("\n🔍 Dropping Low-Importance Columns...")
     
-    # Columns with importance < 0.02 (from analysis)
+    # Columns with importance < 0.02 (from analysis) - KEEPING GENDER
     low_importance_columns = [
         'Diabetes',              # 0.0149 importance
         'Smoking',               # 0.0147 importance  
@@ -34,7 +34,7 @@ def train_with_dropped_columns():
         'Low HDL Cholesterol',   # 0.0138 importance
         'Family Heart Disease',  # 0.0135 importance
         'High LDL Cholesterol',  # 0.0132 importance
-        'Gender',                # 0.0128 importance
+        # 'Gender',              # 0.0128 importance - KEEPING for medical relevance
     ]
     
     # Additional optional drops (moderate importance 0.02-0.025)

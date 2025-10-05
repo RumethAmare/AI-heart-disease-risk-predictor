@@ -362,6 +362,15 @@
                                 <input type="number" id="age" name="age" min="18" max="100" required>
                             </div>
                             
+                            <div class="form-group">
+                                <label for="gender">Gender</label>
+                                <select id="gender" name="gender" required>
+                                    <option value="">Select Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                            </div>
+                            
 
 
                             <!-- Vital Signs -->
@@ -452,9 +461,6 @@
                                     <option value="High">High</option>
                                 </select>
                             </div>
-
-                            <!-- Medical History -->
-                            <div class="form-section-header">🏥 Medical History</div>
                             
 
                             
@@ -652,6 +658,7 @@
         // Auto-fill sample data for testing (remove in production)
         function fillSampleData() {
             document.getElementById('age').value = '55';
+            document.getElementById('gender').value = 'Male';
             document.getElementById('blood_pressure').value = '140';
             document.getElementById('cholesterol_level').value = '250';
             document.getElementById('bmi').value = '28.5';
