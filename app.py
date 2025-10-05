@@ -22,6 +22,17 @@ CORS(app)
 # Global predictor instance
 predictor = None
 
+# Initialize model immediately for deployment compatibility
+def init_model_on_startup():
+    """Initialize model when module is imported (for deployment)."""
+    global predictor
+    try:
+        initialize_model()
+        logger.info("Model initialized during module import")
+    except Exception as e:
+        logger.error(f"Failed to initialize model on startup: {e}")
+        # Don't raise exception to allow app to start, but log the error
+
 def initialize_model():
     """Initialize or load the heart disease prediction model."""
     global predictor
@@ -163,6 +174,19 @@ def predict_heart_disease():
             'CRP Level': float(data.get('crp_level', 1.0)),
             'Homocysteine Level': float(data.get('homocysteine_level', 10.0))
         }
+        
+        # Ensure predictor is loaded
+        if predictor is None:
+            logger.error("Predictor not initialized, attempting to initialize now")
+            try:
+                initialize_model()
+                if predictor is None:
+                    raise Exception("Model initialization failed")
+            except Exception as e:
+                return jsonify({
+                    'error': f'Model not available: {str(e)}',
+                    'success': False
+                }), 500
         
         # Make prediction
         result = predictor.predict(model_input)
@@ -326,6 +350,9 @@ def create_app():
         raise e
     
     return app
+
+# Initialize model for deployment compatibility
+init_model_on_startup()
 
 if __name__ == '__main__':
     # Create the application
