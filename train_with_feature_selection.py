@@ -79,7 +79,7 @@ def train_with_column_dropping():
     # 2. CONFIGURE COLUMNS TO DROP
     print("\n🗑️ Column Dropping Configuration...")
     
-    # Option 1: Drop by name (manual selection) - KEEPING GENDER
+    # Option 1: Drop by name (manual selection) 
     manual_drops = [
         # Low importance columns to drop:
         'Diabetes',              # 0.0149 importance
@@ -88,7 +88,6 @@ def train_with_column_dropping():
         'Low HDL Cholesterol',   # 0.0138 importance
         'Family Heart Disease',  # 0.0135 importance
         'High LDL Cholesterol',  # 0.0132 importance
-        # 'Gender',              # 0.0128 importance - KEEPING for medical relevance
     ]
     
     # Option 2: Drop low importance columns (from analysis)
