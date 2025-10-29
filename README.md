@@ -1,8 +1,8 @@
-# FDM Mini Project 2025 - Data Preprocessing Framework
+# Heart Disease Prediction API - FDM Mini Project 2025
 
 ## 📋 Project Overview
 
-This comprehensive data preprocessing framework is specifically designed for the **Fundamentals of Data Mining (FDM) Mini Project 2025** at Sri Lanka Institute of Information Technology (SLIIT). The framework supports datasets with **10,000+ rows** and provides advanced preprocessing capabilities for Data Mining and Machine Learning applications.
+This is a comprehensive **Heart Disease Risk Prediction System** developed for the **Fundamentals of Data Mining (FDM) Mini Project 2025** at Sri Lanka Institute of Information Technology (SLIIT). The system uses machine learning algorithms to predict heart disease risk based on patient health parameters and features a full-stack web application with Flask backend and interactive frontend.
 
 ## 🎯 Project Requirements Compliance
 
@@ -15,38 +15,76 @@ This comprehensive data preprocessing framework is specifically designed for the
 - ✓ **Jupyter notebook** compatible
 - ✓ Complete **documentation** and examples
 
-## 📁 File Structure
+## 📁 Project Structure
 
 ```
 FDM Project/
-├── 📄 FDM - IT3051- Mini Project - 2025 - finalized instructions.pdf
-├── 🐍 pdf_reader.py                    # PDF content extraction
-├── 🐍 data_preprocessor.py             # Base preprocessing framework
-├── 🐍 fdm_preprocessor.py              # FDM-specific preprocessing
-├── 🐍 examples_and_documentation.py    # Usage examples
-├── 📄 project_instructions.txt         # Extracted PDF content
-├── 📄 README.md                        # This documentation
-├── 📄 sample_loan_dataset.csv          # Generated sample data
-└── 📊 Generated visualizations (PNG files)
+├── � backend/                         # Backend API and ML models
+│   ├── 🐍 app.py                      # Flask application
+│   ├── 🐍 enhanced_model_wrapper.py   # ML model wrapper
+│   ├── 🐍 data_preprocessor.py        # Data preprocessing
+│   ├── 🐍 fdm_preprocessor.py         # FDM-specific preprocessing
+│   ├── 🐍 heart_disease_model.py      # Model training script
+│   ├── 🐍 model_comparison.py         # Model evaluation
+│   ├── � test_api.py                 # API testing
+│   ├── 📄 requirements.txt            # Python dependencies
+│   ├── 📄 Procfile                    # Deployment config
+│   ├── 🤖 *.pkl                       # Trained ML models
+│   └── 📊 *.csv                       # Dataset files
+├── 📁 frontend/                        # Frontend web interface
+│   ├── 📄 index.html                  # Main application page
+│   ├── 📄 assess.html                 # Risk assessment page
+│   └── 📄 statistics.html             # Data statistics page
+├── 📁 static/                          # Static assets
+│   ├── 📁 css/                        # Stylesheets
+│   └── 📁 js/                         # JavaScript files
+├── 📁 templates/                       # Flask templates
+├── � start_server.py                  # Easy server startup script
+└── 📄 README.md                        # Project documentation
 ```
 
 ## 🚀 Quick Start
 
-### 1. Complete FDM Preprocessing Pipeline
-```python
-from fdm_preprocessor import preprocess_for_fdm_project
-
-# One-line complete preprocessing
-preprocessor = preprocess_for_fdm_project(
-    file_path='your_dataset.csv',
-    dataset_name='Your Dataset Name',
-    target_column='target_variable'
-)
+### 1. Install Dependencies
+```bash
+cd backend
+pip install -r requirements.txt
 ```
 
-### 2. Step-by-Step Processing
-```python
-from data_preprocessor import DataPreprocessor
+### 2. Start the Backend Server
+**Option A: Using the startup script (Recommended)**
+```bash
+python start_server.py
+```
+
+**Option B: Direct backend start**
+```bash
+cd backend
+python app.py
+```
+
+### 3. Access the Application
+- **Frontend**: http://localhost:5000
+- **API Documentation**: http://localhost:5000/api/health
+- **Heart Disease Prediction**: http://localhost:5000/api/predict
+
+## 🔧 Technology Stack
+
+### Backend
+- **Python Flask** - Web framework
+- **scikit-learn** - Machine learning
+- **pandas & numpy** - Data processing
+- **joblib** - Model persistence
+
+### Frontend
+- **HTML/CSS/JavaScript** - User interface
+- **Bootstrap** - UI framework
+- **Chart.js** - Data visualization
+
+### Machine Learning
+- **Random Forest** - Primary prediction model
+- **Data preprocessing** - Feature scaling, encoding
+- **Model evaluation** - Accuracy, precision, recall
 
 preprocessor = DataPreprocessor()
 data = preprocessor.load_data('dataset.csv', 'target_column')

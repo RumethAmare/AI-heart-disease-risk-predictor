@@ -1,0 +1,1296 @@
+{
+  "overview": {
+    "total_records": 16000,
+    "total_attributes": 21,
+    "heart_disease_count": 8000,
+    "heart_disease_rate": 50.0,
+    "no_heart_disease_count": 8000,
+    "average_age": 49.2,
+    "age_range": "18 - 80"
+  },
+  "numerical_attributes": {
+    "Age": {
+      "statistics": {
+        "count": 15967,
+        "mean": 49.19458883948143,
+        "median": 49.0,
+        "std": 18.159378353950125,
+        "min": 18.0,
+        "max": 80.0,
+        "q1": 34.0,
+        "q3": 65.0,
+        "iqr": 31.0,
+        "skewness": -0.0009724620348667862,
+        "kurtosis": -1.2100618527571079
+      },
+      "histogram": [
+        973,
+        749,
+        698,
+        755,
+        782,
+        794,
+        788,
+        805,
+        804,
+        687,
+        1016,
+        722,
+        691,
+        759,
+        816,
+        738,
+        740,
+        876,
+        756,
+        1018
+      ],
+      "bins": [
+        18.0,
+        21.1,
+        24.2,
+        27.3,
+        30.4,
+        33.5,
+        36.6,
+        39.7,
+        42.8,
+        45.900000000000006,
+        49.0,
+        52.1,
+        55.2,
+        58.300000000000004,
+        61.4,
+        64.5,
+        67.6,
+        70.7,
+        73.80000000000001,
+        76.9,
+        80.0
+      ],
+      "outliers_count": 0,
+      "outliers_percentage": 0.0,
+      "heart_disease_correlation": {
+        "yes_mean": 49.009134134134136,
+        "no_mean": 49.38043887147335,
+        "yes_std": 18.097486027805587,
+        "no_std": 18.22043268149997,
+        "t_statistic": -1.291873624379016,
+        "p_value": 0.1964196138733666,
+        "significant": "False"
+      }
+    },
+    "Blood Pressure": {
+      "statistics": {
+        "count": 15965,
+        "mean": 149.56548700281866,
+        "median": 149.0,
+        "std": 17.527139680099904,
+        "min": 120.0,
+        "max": 180.0,
+        "q1": 134.0,
+        "q3": 165.0,
+        "iqr": 31.0,
+        "skewness": 0.03459847788124352,
+        "kurtosis": -1.2091303443386354
+      },
+      "histogram": [
+        760,
+        782,
+        856,
+        739,
+        903,
+        833,
+        819,
+        859,
+        711,
+        771,
+        778,
+        829,
+        720,
+        738,
+        738,
+        850,
+        783,
+        783,
+        758,
+        955
+      ],
+      "bins": [
+        120.0,
+        123.0,
+        126.0,
+        129.0,
+        132.0,
+        135.0,
+        138.0,
+        141.0,
+        144.0,
+        147.0,
+        150.0,
+        153.0,
+        156.0,
+        159.0,
+        162.0,
+        165.0,
+        168.0,
+        171.0,
+        174.0,
+        177.0,
+        180.0
+      ],
+      "outliers_count": 0,
+      "outliers_percentage": 0.0,
+      "heart_disease_correlation": {
+        "yes_mean": 149.25100250626568,
+        "no_mean": 149.8797745773325,
+        "yes_std": 17.453722823614253,
+        "no_std": 17.595682397319365,
+        "t_statistic": -2.2666941164648193,
+        "p_value": 0.023422238964210258,
+        "significant": "True"
+      }
+    },
+    "Cholesterol Level": {
+      "statistics": {
+        "count": 15953,
+        "mean": 225.3085939948599,
+        "median": 225.0,
+        "std": 43.54222246736378,
+        "min": 150.0,
+        "max": 300.0,
+        "q1": 187.0,
+        "q3": 263.0,
+        "iqr": 76.0,
+        "skewness": -0.007960159030078805,
+        "kurtosis": -1.207702803892434
+      },
+      "histogram": [
+        772,
+        728,
+        917,
+        737,
+        880,
+        700,
+        848,
+        717,
+        839,
+        745,
+        822,
+        730,
+        805,
+        800,
+        889,
+        761,
+        819,
+        716,
+        941,
+        787
+      ],
+      "bins": [
+        150.0,
+        157.5,
+        165.0,
+        172.5,
+        180.0,
+        187.5,
+        195.0,
+        202.5,
+        210.0,
+        217.5,
+        225.0,
+        232.5,
+        240.0,
+        247.5,
+        255.0,
+        262.5,
+        270.0,
+        277.5,
+        285.0,
+        292.5,
+        300.0
+      ],
+      "outliers_count": 0,
+      "outliers_percentage": 0.0,
+      "heart_disease_correlation": {
+        "yes_mean": 225.25068939583855,
+        "no_mean": 225.36652037617554,
+        "yes_std": 43.41882092400748,
+        "no_std": 43.66796714434671,
+        "t_statistic": -0.1679933498267971,
+        "p_value": 0.8665906406011628,
+        "significant": "False"
+      }
+    },
+    "BMI": {
+      "statistics": {
+        "count": 15976,
+        "mean": 29.114741455155233,
+        "median": 29.09092898,
+        "std": 6.289968189775635,
+        "min": 18.00283694,
+        "max": 39.9969538,
+        "q1": 23.7670776675,
+        "q3": 34.5934943875,
+        "iqr": 10.826416720000001,
+        "skewness": -0.03325476966719787,
+        "kurtosis": -1.1742067194332295
+      },
+      "histogram": [
+        783,
+        751,
+        765,
+        783,
+        768,
+        701,
+        809,
+        755,
+        937,
+        878,
+        769,
+        838,
+        771,
+        746,
+        867,
+        864,
+        833,
+        800,
+        787,
+        771
+      ],
+      "bins": [
+        18.00283694,
+        19.102542783,
+        20.202248626000003,
+        21.301954469000002,
+        22.401660312,
+        23.501366155,
+        24.601071998000002,
+        25.700777841,
+        26.800483684,
+        27.900189527000002,
+        28.99989537,
+        30.099601213,
+        31.199307056000002,
+        32.299012899000004,
+        33.398718742,
+        34.498424585,
+        35.598130428000005,
+        36.697836271,
+        37.797542114,
+        38.897247957000005,
+        39.9969538
+      ],
+      "outliers_count": 0,
+      "outliers_percentage": 0.0,
+      "heart_disease_correlation": {
+        "yes_mean": 29.214168022337418,
+        "no_mean": 29.0151155364599,
+        "yes_std": 6.267048888981473,
+        "no_std": 6.311671743464822,
+        "t_statistic": 2.0001554619371245,
+        "p_value": 0.045500377727842295,
+        "significant": "True"
+      }
+    },
+    "Sleep Hours": {
+      "statistics": {
+        "count": 15972,
+        "mean": 6.987987575441898,
+        "median": 6.982068322,
+        "std": 1.7596289565278265,
+        "min": 4.000605496,
+        "max": 9.999952254,
+        "q1": 5.4522569435,
+        "q3": 8.5279380965,
+        "iqr": 3.0756811529999997,
+        "skewness": 0.008503128609404028,
+        "kurtosis": -1.2203484740394517
+      },
+      "histogram": [
+        912,
+        837,
+        771,
+        804,
+        773,
+        788,
+        815,
+        785,
+        770,
+        772,
+        806,
+        762,
+        768,
+        730,
+        817,
+        855,
+        724,
+        785,
+        809,
+        889
+      ],
+      "bins": [
+        4.000605496,
+        4.3005728339000004,
+        4.6005401718000005,
+        4.900507509700001,
+        5.200474847600001,
+        5.500442185500001,
+        5.8004095234,
+        6.1003768613,
+        6.4003441992,
+        6.7003115371,
+        7.000278875,
+        7.300246212899999,
+        7.6002135507999995,
+        7.9001808887,
+        8.2001482266,
+        8.5001155645,
+        8.8000829024,
+        9.1000502403,
+        9.4000175782,
+        9.6999849161,
+        9.999952254
+      ],
+      "outliers_count": 0,
+      "outliers_percentage": 0.0,
+      "heart_disease_correlation": {
+        "yes_mean": 6.981310439271544,
+        "no_mean": 6.994679778485897,
+        "yes_std": 1.7674628133465644,
+        "no_std": 1.7518275304196336,
+        "t_statistic": -0.4800956367740809,
+        "p_value": 0.6311659660959201,
+        "significant": "False"
+      }
+    },
+    "Triglyceride Level": {
+      "statistics": {
+        "count": 15943,
+        "mean": 250.80725083108575,
+        "median": 250.0,
+        "std": 86.9373389770225,
+        "min": 100.0,
+        "max": 400.0,
+        "q1": 176.0,
+        "q3": 326.0,
+        "iqr": 150.0,
+        "skewness": 0.005821311500492036,
+        "kurtosis": -1.2008717583363686
+      },
+      "histogram": [
+        774,
+        810,
+        692,
+        763,
+        845,
+        886,
+        770,
+        843,
+        806,
+        742,
+        769,
+        765,
+        847,
+        723,
+        820,
+        827,
+        727,
+        795,
+        855,
+        884
+      ],
+      "bins": [
+        100.0,
+        115.0,
+        130.0,
+        145.0,
+        160.0,
+        175.0,
+        190.0,
+        205.0,
+        220.0,
+        235.0,
+        250.0,
+        265.0,
+        280.0,
+        295.0,
+        310.0,
+        325.0,
+        340.0,
+        355.0,
+        370.0,
+        385.0,
+        400.0
+      ],
+      "outliers_count": 0,
+      "outliers_percentage": 0.0,
+      "heart_disease_correlation": {
+        "yes_mean": 251.00766427943208,
+        "no_mean": 250.60746492985973,
+        "yes_std": 86.9241670847793,
+        "no_std": 86.95545199686578,
+        "t_statistic": 0.2906110060246539,
+        "p_value": 0.7713526220928016,
+        "significant": "False"
+      }
+    },
+    "Fasting Blood Sugar": {
+      "statistics": {
+        "count": 15962,
+        "mean": 119.98815937852399,
+        "median": 120.0,
+        "std": 23.516649742671948,
+        "min": 80.0,
+        "max": 160.0,
+        "q1": 99.0,
+        "q3": 141.0,
+        "iqr": 42.0,
+        "skewness": -0.003778455916612554,
+        "kurtosis": -1.2296583516843753
+      },
+      "histogram": [
+        806,
+        755,
+        834,
+        837,
+        791,
+        766,
+        813,
+        746,
+        736,
+        873,
+        746,
+        723,
+        735,
+        741,
+        835,
+        823,
+        771,
+        881,
+        811,
+        939
+      ],
+      "bins": [
+        80.0,
+        84.0,
+        88.0,
+        92.0,
+        96.0,
+        100.0,
+        104.0,
+        108.0,
+        112.0,
+        116.0,
+        120.0,
+        124.0,
+        128.0,
+        132.0,
+        136.0,
+        140.0,
+        144.0,
+        148.0,
+        152.0,
+        156.0,
+        160.0
+      ],
+      "outliers_count": 0,
+      "outliers_percentage": 0.0,
+      "heart_disease_correlation": {
+        "yes_mean": 119.80744640842423,
+        "no_mean": 120.16869129618034,
+        "yes_std": 23.41616921386533,
+        "no_std": 23.616688327072488,
+        "t_statistic": -0.9703738127302478,
+        "p_value": 0.33187490226288663,
+        "significant": "False"
+      }
+    },
+    "CRP Level": {
+      "statistics": {
+        "count": 15949,
+        "mean": 7.482424534458838,
+        "median": 7.454975312,
+        "std": 4.318368124866007,
+        "min": 0.003646712,
+        "max": 14.99708673,
+        "q1": 3.731416793,
+        "q3": 11.24470936,
+        "iqr": 7.513292567,
+        "skewness": -0.00015181514686305177,
+        "kurtosis": -1.196274797911309
+      },
+      "histogram": [
+        855,
+        721,
+        755,
+        854,
+        813,
+        796,
+        793,
+        796,
+        827,
+        824,
+        839,
+        724,
+        733,
+        866,
+        773,
+        833,
+        780,
+        828,
+        803,
+        736
+      ],
+      "bins": [
+        0.003646712,
+        0.7533187129,
+        1.5029907138,
+        2.2526627147,
+        3.0023347156,
+        3.7520067165,
+        4.5016787174,
+        5.251350718299999,
+        6.0010227192,
+        6.7506947201,
+        7.500366721,
+        8.2500387219,
+        8.9997107228,
+        9.7493827237,
+        10.499054724599999,
+        11.2487267255,
+        11.9983987264,
+        12.7480707273,
+        13.4977427282,
+        14.247414729099999,
+        14.99708673
+      ],
+      "outliers_count": 0,
+      "outliers_percentage": 0.0,
+      "heart_disease_correlation": {
+        "yes_mean": 7.479592150400276,
+        "no_mean": 7.485251595821223,
+        "yes_std": 4.287796088414717,
+        "no_std": 4.348935192861933,
+        "t_statistic": -0.08275175871589319,
+        "p_value": 0.9340499670715721,
+        "significant": "False"
+      }
+    },
+    "Homocysteine Level": {
+      "statistics": {
+        "count": 15975,
+        "mean": 12.508122900073115,
+        "median": 12.4326024,
+        "std": 4.342033531959862,
+        "min": 5.000236488,
+        "max": 19.99903699,
+        "q1": 8.7972487575,
+        "q3": 16.25480479,
+        "iqr": 7.457556032500001,
+        "skewness": 0.0033871175863129477,
+        "kurtosis": -1.2000986100186546
+      },
+      "histogram": [
+        817,
+        762,
+        809,
+        842,
+        731,
+        824,
+        751,
+        813,
+        831,
+        882,
+        739,
+        820,
+        807,
+        714,
+        835,
+        713,
+        795,
+        880,
+        773,
+        837
+      ],
+      "bins": [
+        5.000236488,
+        5.7501765130999996,
+        6.5001165382,
+        7.2500565633,
+        7.9999965884,
+        8.749936613500001,
+        9.4998766386,
+        10.2498166637,
+        10.999756688800002,
+        11.7496967139,
+        12.499636739,
+        13.249576764100002,
+        13.999516789200001,
+        14.7494568143,
+        15.499396839400003,
+        16.249336864500002,
+        16.9992768896,
+        17.749216914700003,
+        18.499156939800002,
+        19.2490969649,
+        19.99903699
+      ],
+      "outliers_count": 0,
+      "outliers_percentage": 0.0,
+      "heart_disease_correlation": {
+        "yes_mean": 12.577834387100337,
+        "no_mean": 12.438315343594963,
+        "yes_std": 4.364092096059572,
+        "no_std": 4.318977591499356,
+        "t_statistic": 2.0308278868490954,
+        "p_value": 0.04228898587397274,
+        "significant": "True"
+      }
+    }
+  },
+  "categorical_attributes": {
+    "Gender": {
+      "unique_values": 2,
+      "mode": "Female",
+      "value_counts": {
+        "Female": 8104,
+        "Male": 7877
+      },
+      "value_percentages": {
+        "Female": 50.7,
+        "Male": 49.3
+      },
+      "heart_disease_breakdown": {
+        "Female": {
+          "Yes": 4156,
+          "No": 3948,
+          "yes_percentage": 51.3
+        },
+        "Male": {
+          "Yes": 3843,
+          "No": 4034,
+          "yes_percentage": 48.8
+        }
+      },
+      "missing_count": "19",
+      "missing_percentage": 0.12
+    },
+    "Exercise Habits": {
+      "unique_values": 3,
+      "mode": "High",
+      "value_counts": {
+        "High": 5389,
+        "Medium": 5358,
+        "Low": 5225
+      },
+      "value_percentages": {
+        "High": 33.7,
+        "Medium": 33.5,
+        "Low": 32.7
+      },
+      "heart_disease_breakdown": {
+        "High": {
+          "Yes": 2692,
+          "No": 2697,
+          "yes_percentage": 50.0
+        },
+        "Medium": {
+          "Yes": 2705,
+          "No": 2653,
+          "yes_percentage": 50.5
+        },
+        "Low": {
+          "Yes": 2599,
+          "No": 2626,
+          "yes_percentage": 49.7
+        }
+      },
+      "missing_count": "28",
+      "missing_percentage": 0.18
+    },
+    "Smoking": {
+      "unique_values": 2,
+      "mode": "Yes",
+      "value_counts": {
+        "Yes": 8178,
+        "No": 7786
+      },
+      "value_percentages": {
+        "Yes": 51.2,
+        "No": 48.8
+      },
+      "heart_disease_breakdown": {
+        "Yes": {
+          "Yes": 4084,
+          "No": 4094,
+          "yes_percentage": 49.9
+        },
+        "No": {
+          "Yes": 3899,
+          "No": 3887,
+          "yes_percentage": 50.1
+        }
+      },
+      "missing_count": "36",
+      "missing_percentage": 0.22
+    },
+    "Family Heart Disease": {
+      "unique_values": 2,
+      "mode": "No",
+      "value_counts": {
+        "No": 8069,
+        "Yes": 7883
+      },
+      "value_percentages": {
+        "No": 50.6,
+        "Yes": 49.4
+      },
+      "heart_disease_breakdown": {
+        "No": {
+          "Yes": 4078,
+          "No": 3991,
+          "yes_percentage": 50.5
+        },
+        "Yes": {
+          "Yes": 3888,
+          "No": 3995,
+          "yes_percentage": 49.3
+        }
+      },
+      "missing_count": "48",
+      "missing_percentage": 0.3
+    },
+    "Diabetes": {
+      "unique_values": 2,
+      "mode": "No",
+      "value_counts": {
+        "No": 8030,
+        "Yes": 7918
+      },
+      "value_percentages": {
+        "No": 50.4,
+        "Yes": 49.6
+      },
+      "heart_disease_breakdown": {
+        "No": {
+          "Yes": 4021,
+          "No": 4009,
+          "yes_percentage": 50.1
+        },
+        "Yes": {
+          "Yes": 3951,
+          "No": 3967,
+          "yes_percentage": 49.9
+        }
+      },
+      "missing_count": "52",
+      "missing_percentage": 0.32
+    },
+    "High Blood Pressure": {
+      "unique_values": 2,
+      "mode": "Yes",
+      "value_counts": {
+        "Yes": 8064,
+        "No": 7890
+      },
+      "value_percentages": {
+        "Yes": 50.5,
+        "No": 49.5
+      },
+      "heart_disease_breakdown": {
+        "Yes": {
+          "Yes": 4051,
+          "No": 4013,
+          "yes_percentage": 50.2
+        },
+        "No": {
+          "Yes": 3924,
+          "No": 3966,
+          "yes_percentage": 49.7
+        }
+      },
+      "missing_count": "46",
+      "missing_percentage": 0.29
+    },
+    "Low HDL Cholesterol": {
+      "unique_values": 2,
+      "mode": "Yes",
+      "value_counts": {
+        "Yes": 8011,
+        "No": 7950
+      },
+      "value_percentages": {
+        "Yes": 50.2,
+        "No": 49.8
+      },
+      "heart_disease_breakdown": {
+        "Yes": {
+          "Yes": 4001,
+          "No": 4010,
+          "yes_percentage": 49.9
+        },
+        "No": {
+          "Yes": 3982,
+          "No": 3968,
+          "yes_percentage": 50.1
+        }
+      },
+      "missing_count": "39",
+      "missing_percentage": 0.24
+    },
+    "High LDL Cholesterol": {
+      "unique_values": 2,
+      "mode": "Yes",
+      "value_counts": {
+        "Yes": 8015,
+        "No": 7951
+      },
+      "value_percentages": {
+        "Yes": 50.2,
+        "No": 49.8
+      },
+      "heart_disease_breakdown": {
+        "Yes": {
+          "Yes": 4081,
+          "No": 3934,
+          "yes_percentage": 50.9
+        },
+        "No": {
+          "Yes": 3907,
+          "No": 4044,
+          "yes_percentage": 49.1
+        }
+      },
+      "missing_count": "34",
+      "missing_percentage": 0.21
+    },
+    "Alcohol Consumption": {
+      "unique_values": 3,
+      "mode": "Medium",
+      "value_counts": {
+        "Medium": 4024,
+        "Low": 3985,
+        "High": 3885
+      },
+      "value_percentages": {
+        "Medium": 33.8,
+        "Low": 33.5,
+        "High": 32.7
+      },
+      "heart_disease_breakdown": {
+        "Medium": {
+          "Yes": 2010,
+          "No": 2014,
+          "yes_percentage": 50.0
+        },
+        "Low": {
+          "Yes": 2005,
+          "No": 1980,
+          "yes_percentage": 50.3
+        },
+        "High": {
+          "Yes": 1968,
+          "No": 1917,
+          "yes_percentage": 50.7
+        }
+      },
+      "missing_count": "4106",
+      "missing_percentage": 25.66
+    },
+    "Stress Level": {
+      "unique_values": 3,
+      "mode": "Medium",
+      "value_counts": {
+        "Medium": 5556,
+        "High": 5272,
+        "Low": 5141
+      },
+      "value_percentages": {
+        "Medium": 34.8,
+        "High": 33.0,
+        "Low": 32.2
+      },
+      "heart_disease_breakdown": {
+        "Medium": {
+          "Yes": 2895,
+          "No": 2661,
+          "yes_percentage": 52.1
+        },
+        "High": {
+          "Yes": 2650,
+          "No": 2622,
+          "yes_percentage": 50.3
+        },
+        "Low": {
+          "Yes": 2443,
+          "No": 2698,
+          "yes_percentage": 47.5
+        }
+      },
+      "missing_count": "31",
+      "missing_percentage": 0.19
+    },
+    "Sugar Consumption": {
+      "unique_values": 3,
+      "mode": "Low",
+      "value_counts": {
+        "Low": 5419,
+        "High": 5353,
+        "Medium": 5175
+      },
+      "value_percentages": {
+        "Low": 34.0,
+        "High": 33.6,
+        "Medium": 32.5
+      },
+      "heart_disease_breakdown": {
+        "Low": {
+          "Yes": 2700,
+          "No": 2719,
+          "yes_percentage": 49.8
+        },
+        "High": {
+          "Yes": 2709,
+          "No": 2644,
+          "yes_percentage": 50.6
+        },
+        "Medium": {
+          "Yes": 2559,
+          "No": 2616,
+          "yes_percentage": 49.4
+        }
+      },
+      "missing_count": "53",
+      "missing_percentage": 0.33
+    }
+  },
+  "correlation_matrix": {
+    "Age": {
+      "Age": 1.0,
+      "Blood Pressure": 0.006673811980670134,
+      "Cholesterol Level": 0.024720757132819727,
+      "BMI": -0.009449585769567283,
+      "Sleep Hours": 0.002069474285419171,
+      "Triglyceride Level": -0.010909561418093372,
+      "Fasting Blood Sugar": -0.011495213382519753,
+      "CRP Level": 0.001651926844589382,
+      "Homocysteine Level": -0.008267358609566063
+    },
+    "Blood Pressure": {
+      "Age": 0.006673811980670134,
+      "Blood Pressure": 1.0,
+      "Cholesterol Level": -0.009600307899018527,
+      "BMI": 0.002323238874255579,
+      "Sleep Hours": -0.00828711011293945,
+      "Triglyceride Level": 0.02698539286905993,
+      "Fasting Blood Sugar": 0.0013131955014818902,
+      "CRP Level": -0.011030118463080116,
+      "Homocysteine Level": 0.005162368060886546
+    },
+    "Cholesterol Level": {
+      "Age": 0.024720757132819727,
+      "Blood Pressure": -0.009600307899018527,
+      "Cholesterol Level": 1.0,
+      "BMI": 0.0308205593414783,
+      "Sleep Hours": 0.002662312093094798,
+      "Triglyceride Level": -0.0020043784974367886,
+      "Fasting Blood Sugar": 0.002300834390984867,
+      "CRP Level": -0.012356320739421806,
+      "Homocysteine Level": -0.007109994664668961
+    },
+    "BMI": {
+      "Age": -0.009449585769567283,
+      "Blood Pressure": 0.002323238874255579,
+      "Cholesterol Level": 0.0308205593414783,
+      "BMI": 1.0,
+      "Sleep Hours": 0.005688619216313759,
+      "Triglyceride Level": 0.0023244223073755916,
+      "Fasting Blood Sugar": 0.024185604186342143,
+      "CRP Level": -0.006750083272334525,
+      "Homocysteine Level": -0.0006686457043717879
+    },
+    "Sleep Hours": {
+      "Age": 0.002069474285419171,
+      "Blood Pressure": -0.00828711011293945,
+      "Cholesterol Level": 0.002662312093094798,
+      "BMI": 0.005688619216313759,
+      "Sleep Hours": 1.0,
+      "Triglyceride Level": -0.012723790208233391,
+      "Fasting Blood Sugar": 0.001659619123101526,
+      "CRP Level": -0.005027834244806788,
+      "Homocysteine Level": -0.01976973004441613
+    },
+    "Triglyceride Level": {
+      "Age": -0.010909561418093372,
+      "Blood Pressure": 0.02698539286905993,
+      "Cholesterol Level": -0.0020043784974367886,
+      "BMI": 0.0023244223073755916,
+      "Sleep Hours": -0.012723790208233391,
+      "Triglyceride Level": 1.0,
+      "Fasting Blood Sugar": 0.010593941731089131,
+      "CRP Level": -0.008270841847170043,
+      "Homocysteine Level": -0.0031466637742524534
+    },
+    "Fasting Blood Sugar": {
+      "Age": -0.011495213382519753,
+      "Blood Pressure": 0.0013131955014818902,
+      "Cholesterol Level": 0.002300834390984867,
+      "BMI": 0.024185604186342143,
+      "Sleep Hours": 0.001659619123101526,
+      "Triglyceride Level": 0.010593941731089131,
+      "Fasting Blood Sugar": 1.0,
+      "CRP Level": 0.009307558594407987,
+      "Homocysteine Level": -0.02650457155254449
+    },
+    "CRP Level": {
+      "Age": 0.001651926844589382,
+      "Blood Pressure": -0.011030118463080116,
+      "Cholesterol Level": -0.012356320739421806,
+      "BMI": -0.006750083272334525,
+      "Sleep Hours": -0.005027834244806788,
+      "Triglyceride Level": -0.008270841847170043,
+      "Fasting Blood Sugar": 0.009307558594407987,
+      "CRP Level": 1.0,
+      "Homocysteine Level": -0.007566154373741083
+    },
+    "Homocysteine Level": {
+      "Age": -0.008267358609566063,
+      "Blood Pressure": 0.005162368060886546,
+      "Cholesterol Level": -0.007109994664668961,
+      "BMI": -0.0006686457043717879,
+      "Sleep Hours": -0.01976973004441613,
+      "Triglyceride Level": -0.0031466637742524534,
+      "Fasting Blood Sugar": -0.02650457155254449,
+      "CRP Level": -0.007566154373741083,
+      "Homocysteine Level": 1.0
+    }
+  },
+  "heart_disease_analysis": {
+    "age_group_analysis": {
+      "No": {
+        "<30": 50.330708661417326,
+        "30-39": 47.60299625468164,
+        "40-49": 50.3420523138833,
+        "50-59": 51.11111111111111,
+        "60-69": 49.628470864294094,
+        "70-79": 50.71698113207547
+      },
+      "Yes": {
+        "<30": 49.669291338582674,
+        "30-39": 52.39700374531835,
+        "40-49": 49.6579476861167,
+        "50-59": 48.888888888888886,
+        "60-69": 50.371529135705906,
+        "70-79": 49.283018867924525
+      }
+    },
+    "risk_factors": {
+      "Age": {
+        "risk_levels": {
+          "No": {
+            "Low": 49.0846877673225,
+            "Moderate": 51.072961373390555,
+            "High": 49.181636726546905,
+            "Very High": 50.65569555155567
+          },
+          "Yes": {
+            "Low": 50.9153122326775,
+            "Moderate": 48.927038626609445,
+            "High": 50.818363273453095,
+            "Very High": 49.34430444844433
+          }
+        },
+        "high_risk_threshold": 65
+      },
+      "Blood Pressure": {
+        "risk_levels": {
+          "No": {
+            "Normal": 51.31086142322098,
+            "Elevated": 48.73822975517891,
+            "High": 49.2057761732852,
+            "Very High": 50.530516888932155
+          },
+          "Yes": {
+            "Normal": 48.68913857677903,
+            "Elevated": 51.26177024482109,
+            "High": 50.7942238267148,
+            "Very High": 49.469483111067845
+          }
+        },
+        "high_risk_threshold": 140
+      },
+      "Cholesterol Level": {
+        "risk_levels": {
+          "No": {
+            "Desirable": 49.99068033550792,
+            "Borderline": 50.07194244604316,
+            "High": 48.86867273151388,
+            "Very High": 52.08822149225716
+          },
+          "Yes": {
+            "Desirable": 50.00931966449208,
+            "Borderline": 49.92805755395683,
+            "High": 51.13132726848612,
+            "Very High": 47.91177850774284
+          }
+        },
+        "high_risk_threshold": 280
+      },
+      "BMI": {
+        "risk_levels": {
+          "No": {
+            "Underweight": 47.90575916230366,
+            "Normal": 52.05882352941177,
+            "Overweight": 48.97959183673469,
+            "Obese": 49.29270946681175
+          },
+          "Yes": {
+            "Underweight": 52.09424083769634,
+            "Normal": 47.94117647058824,
+            "Overweight": 51.02040816326531,
+            "Obese": 50.70729053318824
+          }
+        },
+        "high_risk_threshold": 30
+      }
+    },
+    "total_high_risk_patients": 3354
+  },
+  "missing_values": {
+    "by_attribute": {
+      "Age": {
+        "missing_count": 33,
+        "missing_percentage": 0.21,
+        "data_type": "float64",
+        "unique_values": 63
+      },
+      "Gender": {
+        "missing_count": 19,
+        "missing_percentage": 0.12,
+        "data_type": "object",
+        "unique_values": 2
+      },
+      "Blood Pressure": {
+        "missing_count": 35,
+        "missing_percentage": 0.22,
+        "data_type": "float64",
+        "unique_values": 61
+      },
+      "Cholesterol Level": {
+        "missing_count": 47,
+        "missing_percentage": 0.29,
+        "data_type": "float64",
+        "unique_values": 151
+      },
+      "Exercise Habits": {
+        "missing_count": 28,
+        "missing_percentage": 0.18,
+        "data_type": "object",
+        "unique_values": 3
+      },
+      "Smoking": {
+        "missing_count": 36,
+        "missing_percentage": 0.22,
+        "data_type": "object",
+        "unique_values": 2
+      },
+      "Family Heart Disease": {
+        "missing_count": 48,
+        "missing_percentage": 0.3,
+        "data_type": "object",
+        "unique_values": 2
+      },
+      "Diabetes": {
+        "missing_count": 52,
+        "missing_percentage": 0.32,
+        "data_type": "object",
+        "unique_values": 2
+      },
+      "BMI": {
+        "missing_count": 24,
+        "missing_percentage": 0.15,
+        "data_type": "float64",
+        "unique_values": 9978
+      },
+      "High Blood Pressure": {
+        "missing_count": 46,
+        "missing_percentage": 0.29,
+        "data_type": "object",
+        "unique_values": 2
+      },
+      "Low HDL Cholesterol": {
+        "missing_count": 39,
+        "missing_percentage": 0.24,
+        "data_type": "object",
+        "unique_values": 2
+      },
+      "High LDL Cholesterol": {
+        "missing_count": 34,
+        "missing_percentage": 0.21,
+        "data_type": "object",
+        "unique_values": 2
+      },
+      "Alcohol Consumption": {
+        "missing_count": 4106,
+        "missing_percentage": 25.66,
+        "data_type": "object",
+        "unique_values": 3
+      },
+      "Stress Level": {
+        "missing_count": 31,
+        "missing_percentage": 0.19,
+        "data_type": "object",
+        "unique_values": 3
+      },
+      "Sleep Hours": {
+        "missing_count": 28,
+        "missing_percentage": 0.18,
+        "data_type": "float64",
+        "unique_values": 9975
+      },
+      "Sugar Consumption": {
+        "missing_count": 53,
+        "missing_percentage": 0.33,
+        "data_type": "object",
+        "unique_values": 3
+      },
+      "Triglyceride Level": {
+        "missing_count": 57,
+        "missing_percentage": 0.36,
+        "data_type": "float64",
+        "unique_values": 301
+      },
+      "Fasting Blood Sugar": {
+        "missing_count": 38,
+        "missing_percentage": 0.24,
+        "data_type": "float64",
+        "unique_values": 81
+      },
+      "CRP Level": {
+        "missing_count": 51,
+        "missing_percentage": 0.32,
+        "data_type": "float64",
+        "unique_values": 9973
+      },
+      "Homocysteine Level": {
+        "missing_count": 25,
+        "missing_percentage": 0.16,
+        "data_type": "float64",
+        "unique_values": 9980
+      },
+      "Heart Disease Status": {
+        "missing_count": 0,
+        "missing_percentage": 0.0,
+        "data_type": "object",
+        "unique_values": 2
+      }
+    },
+    "overall_summary": {
+      "total_missing_values": 4830,
+      "total_cells": 336000,
+      "overall_missing_percentage": 1.44,
+      "attributes_with_missing": 20
+    }
+  }
+}

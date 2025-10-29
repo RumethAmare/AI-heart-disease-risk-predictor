@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Disease Data Visualization Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg,#764ba2  0%,  #132ea3 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 2rem 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .logo i {
+            margin-right: 0.5rem;
+            color: #e74c3c;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #2c3e50;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #e74c3c;
+        }
+
+        .dashboard-title {
+            text-align: center;
+            padding: 3rem 0 2rem 0;
+        }
+
+        .dashboard-title h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .dashboard-title p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 300;
+        }
+
+        .stats-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: #7f8c8d;
+            font-weight: 500;
+        }
+
+        .charts-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .chart-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .chart-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .chart-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 400px;
+        }
+
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 400px;
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #e74c3c;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin-right: 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .filter-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-group label {
+            font-weight: 500;
+            color: #2c3e50;
+            font-size: 0.9rem;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            padding: 0.5rem;
+            border: 2px solid #ecf0f1;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .filter-group select:focus,
+        .filter-group input:focus {
+            outline: none;
+            border-color: #e74c3c;
+        }
+
+        .refresh-btn {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: transform 0.2s ease;
+        }
+
+        .refresh-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+
+            .dashboard-title h1 {
+                font-size: 2rem;
+            }
+
+            .charts-container {
+                grid-template-columns: 1fr;
+            }
+
+            .chart-card {
+                padding: 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+
+        .distribution-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .dist-stat {
+            text-align: center;
+        }
+
+        .dist-stat .value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .dist-stat .label {
+            font-size: 0.8rem;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-heartbeat"></i>
+                    Heart Disease Analytics
+                </div>
+                <nav>
+                    <ul class="nav-links">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/statistics">Statistics</a></li>
+                        <li><a href="/assess">Assess Risk</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="dashboard-title">
+            <h1>Data Visualization Dashboard</h1>
+            <p>Comprehensive statistical analysis of heart disease dataset attributes</p>
+        </div>
+
+        <div class="stats-overview" id="statsOverview">
+            <div class="stat-card">
+                <div class="stat-icon">📋</div>
+                <div class="stat-number" id="totalRecords">-</div>
+                <div class="stat-label">Total Records</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🏥</div>
+                <div class="stat-number" id="heartDiseaseRate">-</div>
+                <div class="stat-label">Heart Disease Rate</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-number" id="totalAttributes">-</div>
+                <div class="stat-label">Total Attributes</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🎯</div>
+                <div class="stat-number" id="avgAge">-</div>
+                <div class="stat-label">Average Age</div>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <div class="filter-controls">
+                <div class="filter-group">
+                    <label>Chart Type:</label>
+                    <select id="chartTypeFilter">
+                        <option value="all">All Charts</option>
+                        <option value="distribution">Distributions</option>
+                        <option value="correlation">Correlations</option>
+                        <option value="categorical">Categorical</option>
+                        <option value="numerical">Numerical</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Heart Disease Status:</label>
+                    <select id="diseaseFilter">
+                        <option value="all">All Patients</option>
+                        <option value="yes">With Heart Disease</option>
+                        <option value="no">Without Heart Disease</option>
+                    </select>
+                </div>
+                <button class="refresh-btn" onclick="refreshCharts()">
+                    <i class="fas fa-sync-alt"></i> Refresh Data
+                </button>
+            </div>
+        </div>
+
+        <div class="charts-container" id="chartsContainer">
+            <!-- Charts will be dynamically generated here -->
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 Heart Disease Analytics Dashboard. Built with Chart.js and modern web technologies.</p>
+    </footer>
+
+    <script>
+        let statsData = null;
+        let allCharts = {};
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            loadStatistics();
+        });
+
+        async function loadStatistics() {
+            try {
+                showLoading();
+                
+                // Fetch statistics from backend
+                const response = await fetch('/api/statistics');
+                if (!response.ok) throw new Error('Failed to fetch statistics');
+                
+                const result = await response.json();
+                if (!result.success) throw new Error(result.error || 'Failed to load statistics');
+                
+                statsData = result.data;
+                
+                updateOverviewStats();
+                createAllCharts();
+                
+            } catch (error) {
+                console.error('Error loading statistics:', error);
+                showError('Failed to load statistics data');
+            }
+        }
+
+        function updateOverviewStats() {
+            if (!statsData) return;
+            
+            document.getElementById('totalRecords').textContent = statsData.overview.total_records.toLocaleString();
+            document.getElementById('heartDiseaseRate').textContent = statsData.overview.heart_disease_rate + '%';
+            document.getElementById('totalAttributes').textContent = statsData.overview.total_attributes;
+            document.getElementById('avgAge').textContent = statsData.overview.average_age + ' years';
+        }
+
+        function createAllCharts() {
+            const container = document.getElementById('chartsContainer');
+            container.innerHTML = '';
+
+            // Create numerical attribute charts
+            createNumericalCharts();
+            
+            // Create categorical attribute charts
+            createCategoricalCharts();
+            
+            // Create correlation matrix
+            createCorrelationMatrix();
+            
+            // Create distribution comparisons
+            createDistributionComparisons();
+        }
+
+        function createNumericalCharts() {
+            const numericalAttrs = statsData.numerical_attributes;
+            
+            Object.entries(numericalAttrs).forEach(([attr, data]) => {
+                createHistogramChart(attr, data);
+                createBoxPlotChart(attr, data);
+            });
+        }
+
+        function createCategoricalCharts() {
+            const categoricalAttrs = statsData.categorical_attributes;
+            
+            Object.entries(categoricalAttrs).forEach(([attr, data]) => {
+                createPieChart(attr, data);
+                createBarChart(attr, data);
+            });
+        }
+
+        function createHistogramChart(attribute, data) {
+            const chartCard = createChartCard(`${attribute} Distribution`, 'distribution');
+            const canvas = chartCard.querySelector('canvas');
+            
+            const ctx = canvas.getContext('2d');
+            const chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.bins.map((bin, i) => `${bin.toFixed(1)} - ${data.bins[i+1]?.toFixed(1) || 'Max'}`).slice(0, -1),
+                    datasets: [{
+                        label: 'Frequency',
+                        data: data.histogram,
+                        backgroundColor: 'rgba(231, 76, 60, 0.7)',
+                        borderColor: 'rgba(231, 76, 60, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: `${attribute} Distribution`
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            
+            allCharts[`${attribute}_histogram`] = chart;
+            
+            // Add distribution statistics
+            addDistributionStats(chartCard, data.statistics);
+        }
+
+        function createBoxPlotChart(attribute, data) {
+            const chartCard = createChartCard(`${attribute} Box Plot Analysis`, 'numerical');
+            const canvas = chartCard.querySelector('canvas');
+            
+            const ctx = canvas.getContext('2d');
+            
+            // Create a simplified box plot representation using bar chart
+            const chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Min', 'Q1', 'Median', 'Q3', 'Max'],
+                    datasets: [{
+                        label: attribute,
+                        data: [
+                            data.statistics.min,
+                            data.statistics.q1,
+                            data.statistics.median,
+                            data.statistics.q3,
+                            data.statistics.max
+                        ],
+                        backgroundColor: [
+                            'rgba(52, 152, 219, 0.7)',
+                            'rgba(46, 204, 113, 0.7)',
+                            'rgba(241, 196, 15, 0.7)',
+                            'rgba(230, 126, 34, 0.7)',
+                            'rgba(231, 76, 60, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(52, 152, 219, 1)',
+                            'rgba(46, 204, 113, 1)',
+                            'rgba(241, 196, 15, 1)',
+                            'rgba(230, 126, 34, 1)',
+                            'rgba(231, 76, 60, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: `${attribute} Statistical Summary`
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            
+            allCharts[`${attribute}_boxplot`] = chart;
+        }
+
+        function createPieChart(attribute, data) {
+            const chartCard = createChartCard(`${attribute} Distribution`, 'categorical');
+            const canvas = chartCard.querySelector('canvas');
+            
+            const ctx = canvas.getContext('2d');
+            const chart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(data.value_counts),
+                    datasets: [{
+                        data: Object.values(data.value_counts),
+                        backgroundColor: [
+                            'rgba(231, 76, 60, 0.8)',
+                            'rgba(52, 152, 219, 0.8)',
+                            'rgba(46, 204, 113, 0.8)',
+                            'rgba(241, 196, 15, 0.8)',
+                            'rgba(155, 89, 182, 0.8)',
+                            'rgba(230, 126, 34, 0.8)'
+                        ],
+                        borderColor: 'rgba(255, 255, 255, 1)',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        title: {
+                            display: true,
+                            text: `${attribute} Distribution`
+                        }
+                    }
+                }
+            });
+            
+            allCharts[`${attribute}_pie`] = chart;
+        }
+
+        function createBarChart(attribute, data) {
+            const chartCard = createChartCard(`${attribute} by Heart Disease Status`, 'categorical');
+            const canvas = chartCard.querySelector('canvas');
+            
+            const ctx = canvas.getContext('2d');
+            
+            // Prepare data for grouped bar chart
+            const categories = Object.keys(data.value_counts);
+            const heartDiseaseData = data.heart_disease_breakdown;
+            
+            const chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: categories,
+                    datasets: [{
+                        label: 'No Heart Disease',
+                        data: categories.map(cat => heartDiseaseData[cat]?.No || 0),
+                        backgroundColor: 'rgba(46, 204, 113, 0.7)',
+                        borderColor: 'rgba(46, 204, 113, 1)',
+                        borderWidth: 1
+                    }, {
+                        label: 'Heart Disease',
+                        data: categories.map(cat => heartDiseaseData[cat]?.Yes || 0),
+                        backgroundColor: 'rgba(231, 76, 60, 0.7)',
+                        borderColor: 'rgba(231, 76, 60, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        },
+                        title: {
+                            display: true,
+                            text: `${attribute} by Heart Disease Status`
+                        }
+                    },
+                    scales: {
+                        x: {
+                            stacked: false
+                        },
+                        y: {
+                            beginAtZero: true,
+                            stacked: false
+                        }
+                    }
+                }
+            });
+            
+            allCharts[`${attribute}_bar`] = chart;
+        }
+
+        function createCorrelationMatrix() {
+            if (!statsData.correlation_matrix) return;
+            
+            const chartCard = createChartCard('Feature Correlation Matrix', 'correlation');
+            const canvas = chartCard.querySelector('canvas');
+            
+            // Create heatmap-style visualization using Chart.js
+            const correlationData = statsData.correlation_matrix;
+            const features = Object.keys(correlationData);
+            
+            // Convert correlation matrix to scatter plot format for heatmap effect
+            const scatterData = [];
+            features.forEach((feature1, i) => {
+                features.forEach((feature2, j) => {
+                    const correlation = correlationData[feature1][feature2];
+                    scatterData.push({
+                        x: i,
+                        y: j,
+                        v: correlation
+                    });
+                });
+            });
+            
+            const ctx = canvas.getContext('2d');
+            const chart = new Chart(ctx, {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: 'Correlation',
+                        data: scatterData,
+                        backgroundColor: function(context) {
+                            const value = context.parsed.v;
+                            const alpha = Math.abs(value);
+                            return value > 0 ? `rgba(231, 76, 60, ${alpha})` : `rgba(52, 152, 219, ${alpha})`;
+                        },
+                        pointRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'Feature Correlation Matrix'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            type: 'linear',
+                            position: 'bottom',
+                            min: -0.5,
+                            max: features.length - 0.5,
+                            ticks: {
+                                stepSize: 1,
+                                callback: function(value) {
+                                    return features[value] || '';
+                                }
+                            }
+                        },
+                        y: {
+                            type: 'linear',
+                            min: -0.5,
+                            max: features.length - 0.5,
+                            ticks: {
+                                stepSize: 1,
+                                callback: function(value) {
+                                    return features[value] || '';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            allCharts['correlation_matrix'] = chart;
+        }
+
+        function createDistributionComparisons() {
+            const chartCard = createChartCard('Heart Disease Distribution by Age Groups', 'distribution');
+            const canvas = chartCard.querySelector('canvas');
+            
+            const ctx = canvas.getContext('2d');
+            
+            // Sample age group distribution data
+            const ageGroups = ['20-30', '31-40', '41-50', '51-60', '61-70', '71-80', '81+'];
+            const heartDiseaseRates = [5, 15, 25, 45, 65, 75, 80]; // Sample data
+            
+            const chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ageGroups,
+                    datasets: [{
+                        label: 'Heart Disease Rate (%)',
+                        data: heartDiseaseRates,
+                        borderColor: 'rgba(231, 76, 60, 1)',
+                        backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: 'rgba(231, 76, 60, 1)',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true
+                        },
+                        title: {
+                            display: true,
+                            text: 'Heart Disease Rate by Age Group'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            allCharts['age_distribution'] = chart;
+        }
+
+        function createChartCard(title, category) {
+            const chartCard = document.createElement('div');
+            chartCard.className = 'chart-card';
+            chartCard.setAttribute('data-category', category);
+            
+            chartCard.innerHTML = `
+                <h3 class="chart-title">${title}</h3>
+                <div class="chart-container">
+                    <canvas></canvas>
+                </div>
+            `;
+            
+            document.getElementById('chartsContainer').appendChild(chartCard);
+            return chartCard;
+        }
+
+        function addDistributionStats(chartCard, stats) {
+            const statsDiv = document.createElement('div');
+            statsDiv.className = 'distribution-stats';
+            
+            statsDiv.innerHTML = `
+                <div class="dist-stat">
+                    <div class="value">${stats.mean.toFixed(2)}</div>
+                    <div class="label">Mean</div>
+                </div>
+                <div class="dist-stat">
+                    <div class="value">${stats.std.toFixed(2)}</div>
+                    <div class="label">Std Dev</div>
+                </div>
+                <div class="dist-stat">
+                    <div class="value">${stats.median.toFixed(2)}</div>
+                    <div class="label">Median</div>
+                </div>
+                <div class="dist-stat">
+                    <div class="value">${stats.min.toFixed(2)}</div>
+                    <div class="label">Min</div>
+                </div>
+                <div class="dist-stat">
+                    <div class="value">${stats.max.toFixed(2)}</div>
+                    <div class="label">Max</div>
+                </div>
+            `;
+            
+            chartCard.appendChild(statsDiv);
+        }
+
+        function showLoading() {
+            const container = document.getElementById('chartsContainer');
+            container.innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Loading statistical data...
+                </div>
+            `;
+        }
+
+        function showError(message) {
+            const container = document.getElementById('chartsContainer');
+            container.innerHTML = `
+                <div class="error" style="text-align: center; color: #e74c3c; padding: 2rem;">
+                    <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                    <p>${message}</p>
+                    <button class="refresh-btn" onclick="loadStatistics()" style="margin-top: 1rem;">
+                        Try Again
+                    </button>
+                </div>
+            `;
+        }
+
+        function filterCharts() {
+            const chartType = document.getElementById('chartTypeFilter').value;
+            const diseaseFilter = document.getElementById('diseaseFilter').value;
+            
+            const chartCards = document.querySelectorAll('.chart-card');
+            
+            chartCards.forEach(card => {
+                const category = card.getAttribute('data-category');
+                let show = true;
+                
+                if (chartType !== 'all' && category !== chartType) {
+                    show = false;
+                }
+                
+                card.style.display = show ? 'block' : 'none';
+            });
+        }
+
+        function refreshCharts() {
+            // Destroy existing charts
+            Object.values(allCharts).forEach(chart => {
+                if (chart && typeof chart.destroy === 'function') {
+                    chart.destroy();
+                }
+            });
+            allCharts = {};
+            
+            // Reload data
+            loadStatistics();
+        }
+
+        // Event listeners
+        document.getElementById('chartTypeFilter').addEventListener('change', filterCharts);
+        document.getElementById('diseaseFilter').addEventListener('change', filterCharts);
+    </script>
+</body>
+</html>
