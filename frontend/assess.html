@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Disease Risk Assessment</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg,#764ba2  0%,  #132ea3 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 2rem 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .logo i {
+            margin-right: 0.5rem;
+            color: #e74c3c;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #2c3e50;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #e74c3c;
+            background: rgba(231, 76, 60, 0.1);
+        }
+
+        .assessment-section {
+            padding: 3rem 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 300;
+        }
+
+        .assessment-container {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .form-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .form-groups {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 0.8rem;
+            border: 2px solid #ecf0f1;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #e74c3c;
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+        }
+
+        .form-section-header {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin: 2rem 0 1rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #ecf0f1;
+            grid-column: 1 / -1;
+        }
+
+        .submit-section {
+            grid-column: 1 / -1;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            padding: 1rem 3rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .results-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+        }
+
+        .results-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .result-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 1rem;
+            border-left: 4px solid ;
+        }
+
+        .risk-level {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .risk-percentage {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .confidence-level {
+            font-size: 1rem;
+            color: #7f8c8d;
+            margin-bottom: 1rem;
+        }
+
+        .recommendation {
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            border-left: 3px solid #3498db;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .loading {
+            text-align: center;
+            color: #7f8c8d;
+            padding: 2rem;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #e74c3c;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            background: #ffe6e6;
+            color: #e74c3c;
+            padding: 1rem;
+            border-radius: 10px;
+            border-left: 4px solid #e74c3c;
+            margin-top: 1rem;
+        }
+
+        .info-card {
+            background: #e8f4fd;
+            padding: 1.5rem;
+            border-radius: 15px;
+            border-left: 4px solid #3498db;
+            margin-bottom: 2rem;
+        }
+
+        .info-card h3 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-card p {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .high-attributes-section {
+            background: #fff5f5;
+            border: 1px solid #fed7d7;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .high-attributes-section h4 {
+            color: #e53e3e;
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .high-attributes-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .high-attribute-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+            background: #ffffff;
+            border: 1px solid #fed7d7;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .high-attribute-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .attribute-name {
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .attribute-values {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            color: #4a5568;
+        }
+
+        .current-value {
+            font-weight: 600;
+            color: #e53e3e;
+        }
+
+        .normal-range {
+            color: #718096;
+            font-size: 0.75rem;
+        }
+
+        .no-high-attributes {
+            text-align: center;
+            color: #38a169;
+            font-style: italic;
+            padding: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .assessment-container {
+                grid-template-columns: 1fr;
+            }
+
+            .form-groups {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-heartbeat"></i>
+                    Heart Disease Risk Predictor
+                </div>
+                <nav>
+                    <ul class="nav-links">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/statistics">Statistics</a></li>
+                        <li><a href="/assess">Assess Risk</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="assessment-section">
+        <div class="container">
+            <div class="section-header">
+                <h1 class="section-title">Heart Disease Risk Assessment</h1>
+                <p class="section-subtitle">Complete the form below to get your personalized heart disease risk analysis</p>
+            </div>
+
+            <div class="assessment-container">
+                <div class="form-section">
+                    <h2 class="form-title">Health Information Form</h2>
+                    
+                    <form id="assessmentForm">
+                        <div class="form-groups">
+                            <!-- Basic Information -->
+                            <div class="form-section-header">👤 Basic Information</div>
+                            
+                            <div class="form-group">
+                                <label for="age">Age (years)</label>
+                                <input type="number" id="age" name="age" min="18" max="100" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="gender">Gender</label>
+                                <select id="gender" name="gender" required>
+                                    <option value="">Select Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                            </div>
+                            
+
+
+                            <!-- Vital Signs -->
+                            <div class="form-section-header">🩸 Vital Signs & Measurements</div>
+                            
+                            <div class="form-group">
+                                <label for="blood_pressure">Systolic Blood Pressure (mmHg)</label>
+                                <input type="number" id="blood_pressure" name="blood_pressure" min="80" max="220" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="cholesterol_level">Total Cholesterol (mg/dL)</label>
+                                <input type="number" id="cholesterol_level" name="cholesterol_level" min="100" max="400" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="bmi">BMI (Body Mass Index)</label>
+                                <input type="number" id="bmi" name="bmi" min="15" max="50" step="0.1" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="triglyceride_level">Triglyceride Level (mg/dL)</label>
+                                <input type="number" id="triglyceride_level" name="triglyceride_level" min="50" max="500" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="fasting_blood_sugar">Fasting Blood Sugar (mg/dL)</label>
+                                <input type="number" id="fasting_blood_sugar" name="fasting_blood_sugar" min="70" max="300" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="crp_level">CRP Level (mg/L)</label>
+                                <input type="number" id="crp_level" name="crp_level" min="0" max="10" step="0.1" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="homocysteine_level">Homocysteine Level (μmol/L)</label>
+                                <input type="number" id="homocysteine_level" name="homocysteine_level" min="5" max="30" step="0.1" required>
+                            </div>
+
+                            <!-- Lifestyle Factors -->
+                            <div class="form-section-header">🏃‍♂️ Lifestyle Factors</div>
+                            
+
+                            
+                            <div class="form-group">
+                                <label for="exercise_habits">Exercise Habits</label>
+                                <select id="exercise_habits" name="exercise_habits" required>
+                                    <option value="">Select Level</option>
+                                    <option value="High">High (5+ times/week)</option>
+                                    <option value="Medium">Medium (2-4 times/week)</option>
+                                    <option value="Low">Low (0-1 times/week)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="alcohol_consumption">Alcohol Consumption</label>
+                                <select id="alcohol_consumption" name="alcohol_consumption" required>
+                                    <option value="">Select Level</option>
+                                    <option value="None">None</option>
+                                    <option value="Light">Light</option>
+                                    <option value="Moderate">Moderate</option>
+                                    <option value="Heavy">Heavy</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="stress_level">Stress Level</label>
+                                <select id="stress_level" name="stress_level" required>
+                                    <option value="">Select Level</option>
+                                    <option value="Low">Low</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="High">High</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="sleep_hours">Sleep Hours (per night)</label>
+                                <input type="number" id="sleep_hours" name="sleep_hours" min="3" max="12" step="0.5" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="sugar_consumption">Sugar Consumption</label>
+                                <select id="sugar_consumption" name="sugar_consumption" required>
+                                    <option value="">Select Level</option>
+                                    <option value="Low">Low</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="High">High</option>
+                                </select>
+                            </div>
+                            
+
+                            
+
+                            
+
+                            
+
+                            
+
+                        </div>
+
+                        <div class="submit-section">
+                            <button type="submit" class="submit-btn" id="submitBtn">
+                                <i class="fas fa-heartbeat"></i> Analyze My Risk
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="results-section">
+                    <h3 class="results-title">📊 Risk Analysis Results</h3>
+                    
+                    <div class="info-card">
+                        <h3><i class="fas fa-info-circle"></i> How it works</h3>
+                        <p>Our model analyzes your health data using advanced machine learning to assess your heart disease risk. The analysis considers 21 different health factors and provides personalized recommendations.</p>
+                    </div>
+
+                    <div id="resultsContainer">
+                        <div class="loading" style="display: none;" id="loadingDiv">
+                            <div class="spinner"></div>
+                            <p>Analyzing your health data...</p>
+                        </div>
+                        
+                        <div id="noResults" style="color: #7f8c8d; text-align: center; padding: 2rem;">
+                            Complete the form to see your heart disease risk analysis
+                        </div>
+                        
+                        <div id="resultsDisplay" style="display: none;">
+                            <!-- Results will be populated here -->
+                        </div>
+                        
+                        <div id="errorDisplay" style="display: none;" class="error-message">
+                            <!-- Error messages will appear here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('assessmentForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const loadingDiv = document.getElementById('loadingDiv');
+            const noResults = document.getElementById('noResults');
+            const resultsDisplay = document.getElementById('resultsDisplay');
+            const errorDisplay = document.getElementById('errorDisplay');
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analyzing...';
+            loadingDiv.style.display = 'block';
+            noResults.style.display = 'none';
+            resultsDisplay.style.display = 'none';
+            errorDisplay.style.display = 'none';
+            
+            try {
+                // Collect form data
+                const formData = new FormData(this);
+                const data = {};
+                
+                for (let [key, value] of formData.entries()) {
+                    // Convert numeric fields
+                    if (['age', 'blood_pressure', 'cholesterol_level', 'bmi', 'triglyceride_level', 
+                         'fasting_blood_sugar', 'crp_level', 'homocysteine_level', 'sleep_hours'].includes(key)) {
+                        data[key] = parseFloat(value) || 0;
+                    } else {
+                        data[key] = value || 'Unknown';
+                    }
+                }
+                
+                // Set defaults for optional fields
+                const defaults = {
+                    'triglyceride_level': 150,
+                    'fasting_blood_sugar': 90,
+                    'crp_level': 1.0,
+                    'homocysteine_level': 10.0,
+                    'sleep_hours': 7,
+                    'alcohol_consumption': 'None',
+                    'stress_level': 'Medium',
+                    'sugar_consumption': 'Medium'
+                };
+                
+                Object.keys(defaults).forEach(key => {
+                    if (!data[key] || data[key] === 'Unknown' || data[key] === '') {
+                        data[key] = defaults[key];
+                    }
+                });
+                
+                console.log('Sending data:', data);
+                
+                // Send to API
+                const response = await fetch('/api/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    displayResults(result);
+                } else {
+                    throw new Error(result.error || 'Unknown error occurred');
+                }
+                
+            } catch (error) {
+                console.error('Error:', error);
+                errorDisplay.innerHTML = `
+                    <h4><i class="fas fa-exclamation-triangle"></i> Analysis Error</h4>
+                    <p>${error.message}</p>
+                    <p>Please check your input and try again.</p>
+                `;
+                errorDisplay.style.display = 'block';
+                
+            } finally {
+                // Reset button state
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-heartbeat"></i> Analyze My Risk';
+                loadingDiv.style.display = 'none';
+            }
+        });
+        
+        function analyzeHighAttributes(inputData) {
+            // Define normal/average limits based on medical standards
+            const normalLimits = {
+                'Blood Pressure': { max: 140, unit: 'mmHg', description: 'Systolic BP > 140 indicates hypertension' },
+                'Cholesterol Level': { max: 220, unit: 'mg/dL', description: 'Total cholesterol > 220 increases risk' },
+                'BMI': { max: 27, unit: 'kg/m²', description: 'BMI > 27 indicates overweight' },
+                'CRP Level': { max: 1.0, unit: 'mg/L', description: 'Elevated CRP indicates inflammation' },
+                'Homocysteine Level': { max: 12, unit: 'μmol/L', description: 'High homocysteine linked to heart disease' },
+                'Triglyceride Level': { max: 150, unit: 'mg/dL', description: 'High triglycerides increase cardiac risk' },
+                'Fasting Blood Sugar': { max: 100, unit: 'mg/dL', description: 'Elevated glucose indicates diabetes risk' },
+                'Sleep Hours': { min: 6, max: 9, unit: 'hours', description: 'Poor sleep quality affects heart health' }
+            };
+
+            const categoricalRisks = {
+                'Exercise Habits': { risk: 'Low', description: 'Low exercise increases heart disease risk' },
+                'Stress Level': { risk: 'High', description: 'High stress contributes to cardiovascular problems' },
+                'Alcohol Consumption': { risk: 'Heavy', description: 'Heavy drinking damages the cardiovascular system' },
+                'Sugar Consumption': { risk: 'High', description: 'High sugar intake increases metabolic risk' }
+            };
+
+            const highAttributes = [];
+
+            // Check numerical attributes
+            Object.keys(normalLimits).forEach(attr => {
+                if (inputData[attr] !== undefined) {
+                    const value = parseFloat(inputData[attr]);
+                    const limits = normalLimits[attr];
+                    
+                    let isHigh = false;
+                    let normalRange = '';
+                    
+                    if (limits.max && limits.min) {
+                        // Range check (like Sleep Hours)
+                        isHigh = value < limits.min || value > limits.max;
+                        normalRange = `${limits.min}-${limits.max} ${limits.unit}`;
+                    } else if (limits.max) {
+                        // Maximum check
+                        isHigh = value > limits.max;
+                        normalRange = `≤ ${limits.max} ${limits.unit}`;
+                    }
+                    
+                    if (isHigh) {
+                        highAttributes.push({
+                            name: attr,
+                            currentValue: `${value} ${limits.unit}`,
+                            normalRange: normalRange,
+                            description: limits.description
+                        });
+                    }
+                }
+            });
+
+            // Check categorical attributes
+            Object.keys(categoricalRisks).forEach(attr => {
+                if (inputData[attr] !== undefined) {
+                    const value = inputData[attr];
+                    const risk = categoricalRisks[attr];
+                    
+                    if (value === risk.risk) {
+                        const normalValue =
+                                          attr === 'Exercise Habits' ? 'High' :
+                                          attr === 'Stress Level' ? 'Low' :
+                                          attr === 'Alcohol Consumption' ? 'None' : 'Low' ;
+                                          attr === 'Sugar Consumption' ? 'Low' : 'Normal';
+                        
+                        highAttributes.push({
+                            name: attr,
+                            currentValue: value,
+                            normalRange: `Optimal: ${normalValue}`,
+                            description: risk.description
+                        });
+                    }
+                }
+            });
+
+            return highAttributes;
+        }
+        
+        function generateHighAttributesSection(inputData) {
+            const highAttributes = analyzeHighAttributes(inputData);
+            
+            if (highAttributes.length === 0) {
+                return `
+                    <div class="high-attributes-section">
+                        <h4>
+                            <i class="fas fa-check-circle"></i> 
+                            Attributes Analysis
+                        </h4>
+                        <div class="no-high-attributes">
+                            <i class="fas fa-thumbs-up"></i> All measured values are within normal ranges!
+                        </div>
+                    </div>
+                `;
+            }
+            
+            const attributesList = highAttributes.map(attr => `
+                <li class="high-attribute-item">
+                    <span class="attribute-name">${attr.name}</span>
+                    <div class="attribute-values">
+                        <span class="current-value">${attr.currentValue}</span>
+                        <span class="normal-range">(${attr.normalRange})</span>
+                    </div>
+                </li>
+            `).join('');
+            
+            return `
+                <div class="high-attributes-section">
+                    <h4>
+                        <i class="fas fa-exclamation-triangle"></i> 
+                        Attributes Above Average Limits
+                    </h4>
+                    <ul class="high-attributes-list">
+                        ${attributesList}
+                    </ul>
+                    <p style="font-size: 0.75rem; color: #718096; margin-top: 0.75rem; font-style: italic;">
+                        <i class="fas fa-info-circle"></i> 
+                        These factors may contribute to increased cardiovascular risk. Consult your healthcare provider for personalized advice.
+                    </p>
+                </div>
+            `;
+        }
+        
+        function displayResults(result) {
+            const resultsDisplay = document.getElementById('resultsDisplay');
+            const riskColor = getRiskColor(result.risk_level);
+            //style="color: ${riskColor}, ${getRiskIcon(result.risk_level)} 
+
+            resultsDisplay.innerHTML = `
+                <div class="result-card" style="color: ${riskColor};">
+                    <div class="risk-level" style="color: black;">
+                        ${result.risk_level} Risk
+                    </div>
+                    <div class="risk-percentage" style="color: black;">
+                        ${result.risk_percentage}
+                    </div>
+                    <div class="confidence-level">
+                        Confidence: ${result.confidence}
+                    </div>
+                    <div class="recommendation" style="color: black;">
+                        <strong>💡 Recommendation:</strong><br>
+                        ${result.recommendation}
+                    </div>
+                </div>
+                
+                <div style="background: #f8f9fa; padding: 1rem; border-radius: 10px; margin-top: 1rem;">
+                    <h4 style="color: #2c3e50; margin-bottom: 0.5rem;">
+                        <i class="fas fa-chart-line"></i> Risk Assessment Details
+                    </h4>
+                    <p style="font-size: 0.9rem; color: #7f8c8d;">
+                        Prediction: <strong style="color: ${riskColor}">${result.prediction}</strong><br>
+                        Risk Level: <strong>${result.risk_level}</strong><br>
+                        
+                    </p>
+                </div>
+                
+                ${generateHighAttributesSection(result.input_data)}
+            `;
+            
+            resultsDisplay.style.display = 'block';
+        }
+        
+        function getRiskColor(riskLevel) {
+            switch(riskLevel?.toLowerCase()) {
+                case 'low': return '#27ae60';
+                case 'medium': return '#f39c12';
+                case 'medium-high': return '#e67e22';
+                case 'high': return '#e74c3c';
+                default: return '#34495e';
+            }
+        }
+        
+        function getRiskIcon(riskLevel) {
+            switch(riskLevel?.toLowerCase()) {
+                case 'low': return '✅';
+                case 'medium': return '⚠️';
+                case 'medium-high': return '🔶';
+                case 'high': return '🚨';
+                default: return '❓';
+            }
+        }
+        
+        // Auto-fill sample data for testing (remove in production)
+        function fillSampleData() {
+            document.getElementById('age').value = '55';
+            document.getElementById('gender').value = 'Male';
+            document.getElementById('blood_pressure').value = '140';
+            document.getElementById('cholesterol_level').value = '250';
+            document.getElementById('bmi').value = '28.5';
+            document.getElementById('exercise_habits').value = 'Low';
+            document.getElementById('triglyceride_level').value = '180';
+            document.getElementById('fasting_blood_sugar').value = '110';
+            document.getElementById('crp_level').value = '3.5';
+            document.getElementById('homocysteine_level').value = '12.0';
+            document.getElementById('sleep_hours').value = '6';
+            document.getElementById('alcohol_consumption').value = 'Light';
+            document.getElementById('stress_level').value = 'High';
+            document.getElementById('sugar_consumption').value = 'High';
+        }
+        
+        // Add sample data button for testing
+        document.addEventListener('DOMContentLoaded', function() {
+            const submitSection = document.querySelector('.submit-section');
+            const sampleBtn = document.createElement('button');
+            sampleBtn.type = 'button';
+            sampleBtn.className = 'submit-btn';
+            sampleBtn.style.marginLeft = '1rem';
+            sampleBtn.style.background = 'linear-gradient(135deg, #3498db, #2980b9)';
+            sampleBtn.innerHTML = '<i class="fas fa-flask"></i> Fill Sample Data';
+            sampleBtn.onclick = fillSampleData;
+            submitSection.appendChild(sampleBtn);
+        });
+    </script>
+</body>
+</html>

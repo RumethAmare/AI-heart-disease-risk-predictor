@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Test</title>
+</head>
+<body>
+    <h1>Heart Disease API Test</h1>
+    <button onclick="testAPI()">Test API</button>
+    <div id="result"></div>
+    
+    <script>
+    async function testAPI() {
+        try {
+            console.log('Testing API...');
+            
+            const testData = {
+                age: 55,
+                gender: "Male",
+                blood_pressure: 140,
+                cholesterol_level: 200,
+                bmi: 28,
+                exercise_habits: "Medium",
+                alcohol_consumption: "None",
+                stress_level: "Medium",
+                sleep_hours: 7,
+                sugar_consumption: "Medium",
+                triglyceride_level: 150,
+                fasting_blood_sugar: 90,
+                crp_level: 1.0,
+                homocysteine_level: 10.0
+            };
+            
+            console.log('Sending data:', testData);
+            
+            const response = await fetch('/api/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(testData)
+            });
+            
+            console.log('Response status:', response.status);
+            
+            const result = await response.json();
+            console.log('Result:', result);
+            
+            document.getElementById('result').innerHTML = `
+                <h2>Success!</h2>
+                <p>Prediction: ${result.prediction}</p>
+                <p>Risk: ${result.risk_level} (${result.risk_percentage})</p>
+                <p>Recommendation: ${result.recommendation}</p>
+            `;
+            
+        } catch (error) {
+            console.error('Error:', error);
+            document.getElementById('result').innerHTML = `
+                <h2>Error!</h2>
+                <p>${error.message}</p>
+            `;
+        }
+    }
+    </script>
+</body>
+</html>
