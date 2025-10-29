@@ -16,7 +16,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Initialize Flask app with template and static folders
-app = Flask(__name__, template_folder='frontend', static_folder='frontend')
+app = Flask(__name__, template_folder='../frontend', static_folder='../static')
 CORS(app)
 
 # Global predictor instance
@@ -477,9 +477,9 @@ def create_app():
     """Create and configure the Flask application."""
     
     # Create templates and static directories if they don't exist
-    os.makedirs('templates', exist_ok=True)
-    os.makedirs('static/css', exist_ok=True)
-    os.makedirs('static/js', exist_ok=True)
+    os.makedirs('../templates', exist_ok=True)
+    os.makedirs('../static/css', exist_ok=True)
+    os.makedirs('../static/js', exist_ok=True)
     
     # Initialize the model
     try:
